@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud Computing — A Complete Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2234;
+    --border: #1f2d45;
+    --accent: #3b82f6;
+    --accent2: #06d6a0;
+    --accent3: #f59e0b;
+    --accent4: #f472b6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --heading-font: 'DM Serif Display', serif;
+    --mono: 'IBM Plex Mono', monospace;
+    --body: 'Instrument Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #1d3a6e44, transparent),
+                radial-gradient(ellipse 50% 40% at 80% 20%, #06d6a022, transparent),
+                radial-gradient(ellipse 50% 40% at 20% 80%, #f59e0b11, transparent);
+    pointer-events: none;
+  }
+
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-family: var(--heading-font);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 1.05;
+    position: relative;
+    background: linear-gradient(135deg, #e2e8f0 30%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 560px;
+    position: relative;
+  }
+
+  .unit-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    justify-content: center;
+    position: relative;
+  }
+
+  .unit-nav a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+    transition: all 0.2s;
+    background: var(--surface);
+  }
+
+  .unit-nav a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #1e3a5f33;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── UNIT SECTION ── */
+  .unit {
+    padding: 6rem 0 4rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .unit-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .unit-number {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 0.15em;
+    padding-top: 0.3rem;
+    border-left: 2px solid var(--border);
+    padding-left: 0.6rem;
+  }
+
+  .unit-title-block h2 {
+    font-family: var(--heading-font);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  .unit-title-block .unit-tag {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── TOPIC CARDS ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 700px) {
+    .topics-grid { grid-template-columns: 1fr; }
+    .unit-header { flex-direction: column; gap: 1rem; }
+    .unit-number { writing-mode: horizontal-tb; border-left: none; border-bottom: 2px solid var(--border); padding-left: 0; padding-bottom: 0.4rem; }
+  }
+
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .topic-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .topic-card.full {
+    grid-column: 1 / -1;
+  }
+
+  .topic-card h3 {
+    font-family: var(--heading-font);
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .topic-card p {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .topic-card p strong {
+    color: var(--text);
+  }
+
+  /* ── DIAGRAMS ── */
+  .diagram-wrap {
+    margin: 2.5rem 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .diagram-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    text-transform: uppercase;
+  }
+
+  .diagram-body {
+    padding: 2rem;
+    overflow-x: auto;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #060a14;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: #a5c8ff;
+    overflow-x: auto;
+    margin: 1.25rem 0;
+  }
+
+  .code-block .kw { color: #f59e0b; }
+  .code-block .str { color: #06d6a0; }
+  .code-block .cm { color: #3d5068; }
+
+  /* ── COMPARISON TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  thead tr {
+    background: var(--surface2);
+  }
+
+  th {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+
+  td:first-child { color: var(--text); font-weight: 500; }
+
+  tr:last-child td { border-bottom: none; }
+
+  /* ── ACCENT COLORS PER UNIT ── */
+  .u1 .unit-tag { background: #1e3a5f44; color: var(--accent); }
+  .u1 .topic-card:hover { border-color: var(--accent); }
+  .u1 h3 { color: #93c5fd; }
+
+  .u2 .unit-tag { background: #06d6a022; color: var(--accent2); }
+  .u2 .topic-card:hover { border-color: var(--accent2); }
+  .u2 h3 { color: #6ee7b7; }
+
+  .u3 .unit-tag { background: #f59e0b22; color: var(--accent3); }
+  .u3 .topic-card:hover { border-color: var(--accent3); }
+  .u3 h3 { color: #fcd34d; }
+
+  .u4 .unit-tag { background: #f472b622; color: var(--accent4); }
+  .u4 .topic-card:hover { border-color: var(--accent4); }
+  .u4 h3 { color: #f9a8d4; }
+
+  .u5 .unit-tag { background: #a855f722; color: #c084fc; }
+  .u5 .topic-card:hover { border-color: #a855f7; }
+  .u5 h3 { color: #c084fc; }
+
+  /* ── SVG DIAGRAMS ── */
+  svg text { font-family: var(--mono); }
+
+  /* ── PILL LIST ── */
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 3px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* ── EXAMPLE BOX ── */
+  .example-box {
+    border-left: 3px solid var(--accent);
+    background: #1e3a5f22;
+    padding: 1rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+  }
+
+  .example-box.green { border-color: var(--accent2); background: #06d6a011; }
+  .example-box.amber { border-color: var(--accent3); background: #f59e0b11; }
+  .example-box.pink  { border-color: var(--accent4); background: #f472b611; }
+  .example-box.purple { border-color: #a855f7; background: #a855f711; }
+
+  .example-box .ex-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .sdiv {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 2.5rem 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-eyebrow">Complete Study Reference</div>
+  <h1>Cloud Computing</h1>
+  <p class="hero-sub">Five units covering fundamentals to advanced concepts — with architecture diagrams, examples, and comparisons.</p>
+  <nav class="unit-nav">
+    <a href="#u1">I · Fundamentals</a>
+    <a href="#u2">II · Enabling Tech</a>
+    <a href="#u3">III · Virtualization</a>
+    <a href="#u4">IV · Challenges</a>
+    <a href="#u5">V · Advanced</a>
+  </nav>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     UNIT I
+═══════════════════════════════════════════════ -->
+<section class="unit u1" id="u1">
+  <div class="container">
+    <div class="unit-header">
+      <div class="unit-number">UNIT · I</div>
+      <div class="unit-title-block">
+        <h2>Introduction to Cloud Computing Fundamentals</h2>
+        <span class="unit-tag">IaaS · PaaS · SaaS · Deployment Models · Providers</span>
+      </div>
+    </div>
+
+    <!-- What is cloud -->
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>What is Cloud Computing?</h3>
+        <p>Cloud computing is the delivery of computing services — servers, storage, databases, networking, software, analytics, and intelligence — over the internet ("the cloud") to offer faster innovation, flexible resources, and economies of scale.</p>
+        <p style="margin-top:0.75rem">You pay only for the resources you use, helping lower operating costs, run infrastructure more efficiently, and scale as business needs change.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Defining a Cloud</h3>
+        <p>NIST defines cloud computing by <strong>5 essential characteristics</strong>:</p>
+        <div class="pill-list" style="margin-top:0.75rem">
+          <span class="pill">On-demand self-service</span>
+          <span class="pill">Broad network access</span>
+          <span class="pill">Resource pooling</span>
+          <span class="pill">Rapid elasticity</span>
+          <span class="pill">Measured service</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cloud Reference Model Diagram -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Cloud Computing Reference Model (Service Layers)</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- SaaS -->
+          <rect x="60" y="20" width="680" height="62" rx="6" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5"/>
+          <text x="400" y="47" text-anchor="middle" fill="#93c5fd" font-size="14" font-weight="600">SaaS — Software as a Service</text>
+          <text x="400" y="68" text-anchor="middle" fill="#64748b" font-size="11">Applications delivered over the web (Gmail, Salesforce, Dropbox, Office 365)</text>
+
+          <!-- PaaS -->
+          <rect x="100" y="102" width="600" height="62" rx="6" fill="#134e4a" stroke="#06d6a0" stroke-width="1.5"/>
+          <text x="400" y="129" text-anchor="middle" fill="#6ee7b7" font-size="14" font-weight="600">PaaS — Platform as a Service</text>
+          <text x="400" y="150" text-anchor="middle" fill="#64748b" font-size="11">Runtime, middleware, OS tools (Google App Engine, Heroku, Azure App Service)</text>
+
+          <!-- IaaS -->
+          <rect x="140" y="184" width="520" height="62" rx="6" fill="#451a03" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="400" y="211" text-anchor="middle" fill="#fcd34d" font-size="14" font-weight="600">IaaS — Infrastructure as a Service</text>
+          <text x="400" y="232" text-anchor="middle" fill="#64748b" font-size="11">VMs, storage, networking (AWS EC2, Azure VMs, Google Compute Engine)</text>
+
+          <!-- Bottom label -->
+          <text x="400" y="268" text-anchor="middle" fill="#3d5068" font-size="10">← Higher abstraction (more managed) ·  Lower abstraction (more control) →</text>
+
+          <!-- Left labels -->
+          <text x="30" y="55" text-anchor="middle" fill="#3b82f6" font-size="9" transform="rotate(-90,30,55)">USER</text>
+          <text x="30" y="135" text-anchor="middle" fill="#06d6a0" font-size="9" transform="rotate(-90,30,135)">DEV</text>
+          <text x="30" y="215" text-anchor="middle" fill="#f59e0b" font-size="9" transform="rotate(-90,30,215)">OPS</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Service Models -->
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>IaaS — Infrastructure as a Service</h3>
+        <p>Provides virtualized computing resources over the internet. You manage OS, middleware, runtime, data, and applications. The provider manages hypervisors, servers, storage, networking.</p>
+        <div class="example-box amber" style="margin-top:1rem">
+          <div class="ex-label">Real-world Example</div>
+          AWS EC2: Spin up a Linux VM in seconds. You choose CPU, RAM, storage. Pay per hour. Netflix uses EC2 to run its streaming backend.
+        </div>
+      </div>
+      <div class="topic-card">
+        <h3>PaaS — Platform as a Service</h3>
+        <p>Provides a managed environment to develop, test, deliver, and manage applications. No OS or infrastructure management. Focus entirely on code.</p>
+        <div class="example-box green" style="margin-top:1rem">
+          <div class="ex-label">Real-world Example</div>
+          Google App Engine: Deploy a Python/Java/Go app — no server config. Scales automatically. App Engine handles load balancing, patch management, monitoring.
+        </div>
+      </div>
+      <div class="topic-card">
+        <h3>SaaS — Software as a Service</h3>
+        <p>Complete applications delivered via browser. No installation, no maintenance. The provider manages everything from the datacenter up to the application.</p>
+        <div class="example-box" style="margin-top:1rem">
+          <div class="ex-label">Real-world Example</div>
+          Gmail, Microsoft 365, Salesforce CRM, Zoom. You just log in and use it. Updates happen automatically with zero user effort.
+        </div>
+      </div>
+      <div class="topic-card">
+        <h3>Utility Computing</h3>
+        <p>The packaging of computing resources (compute, storage, services) as a metered service, similar to traditional public utilities like electricity or water. Pay only for what you consume.</p>
+        <p style="margin-top:0.75rem">This model enables <strong>OpEx over CapEx</strong> — no upfront hardware investment, predictable monthly bills based on actual usage.</p>
+      </div>
+    </div>
+
+    <!-- Deployment Models -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Cloud Deployment Models</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Public -->
+          <rect x="20" y="20" width="220" height="160" rx="8" fill="#1e3a5f33" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="0"/>
+          <text x="130" y="55" text-anchor="middle" fill="#93c5fd" font-size="13" font-weight="600">Public Cloud</text>
+          <text x="130" y="80" text-anchor="middle" fill="#64748b" font-size="10">Owned by CSP</text>
+          <text x="130" y="98" text-anchor="middle" fill="#64748b" font-size="10">Shared infrastructure</text>
+          <text x="130" y="116" text-anchor="middle" fill="#64748b" font-size="10">Pay-as-you-go</text>
+          <text x="130" y="134" text-anchor="middle" fill="#64748b" font-size="10">AWS · Azure · GCP</text>
+          <text x="130" y="160" text-anchor="middle" fill="#3b82f6" font-size="9">✓ Cheapest  ✓ Scalable</text>
+          <text x="130" y="175" text-anchor="middle" fill="#ef4444" font-size="9">✗ Less control</text>
+
+          <!-- Private -->
+          <rect x="290" y="20" width="220" height="160" rx="8" fill="#06d6a011" stroke="#06d6a0" stroke-width="1.5"/>
+          <text x="400" y="55" text-anchor="middle" fill="#6ee7b7" font-size="13" font-weight="600">Private Cloud</text>
+          <text x="400" y="80" text-anchor="middle" fill="#64748b" font-size="10">Org-owned/managed</text>
+          <text x="400" y="98" text-anchor="middle" fill="#64748b" font-size="10">Dedicated resources</text>
+          <text x="400" y="116" text-anchor="middle" fill="#64748b" font-size="10">On-premises or hosted</text>
+          <text x="400" y="134" text-anchor="middle" fill="#64748b" font-size="10">OpenStack · VMware</text>
+          <text x="400" y="160" text-anchor="middle" fill="#06d6a0" font-size="9">✓ Control  ✓ Security</text>
+          <text x="400" y="175" text-anchor="middle" fill="#ef4444" font-size="9">✗ High capex</text>
+
+          <!-- Hybrid -->
+          <rect x="560" y="20" width="220" height="160" rx="8" fill="#f59e0b11" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="670" y="55" text-anchor="middle" fill="#fcd34d" font-size="13" font-weight="600">Hybrid Cloud</text>
+          <text x="670" y="80" text-anchor="middle" fill="#64748b" font-size="10">Mix of public + private</text>
+          <text x="670" y="98" text-anchor="middle" fill="#64748b" font-size="10">Data portability</text>
+          <text x="670" y="116" text-anchor="middle" fill="#64748b" font-size="10">Burst to public on demand</text>
+          <text x="670" y="134" text-anchor="middle" fill="#64748b" font-size="10">Azure Arc · AWS Outposts</text>
+          <text x="670" y="160" text-anchor="middle" fill="#f59e0b" font-size="9">✓ Flexible  ✓ Balanced</text>
+          <text x="670" y="175" text-anchor="middle" fill="#ef4444" font-size="9">✗ Complex to manage</text>
+
+          <!-- Arrows between -->
+          <line x1="240" y1="100" x2="290" y2="100" stroke="#3d5068" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="510" y1="100" x2="560" y2="100" stroke="#3d5068" stroke-width="1.5" marker-end="url(#arr)"/>
+          <defs>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#3d5068"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Providers comparison -->
+    <div class="table-wrap">
+      <div class="diagram-label" style="padding:0.6rem 1rem; background:var(--surface2); border:1px solid var(--border); border-bottom:none; border-radius:6px 6px 0 0; font-family:var(--mono); font-size:0.7rem; letter-spacing:0.15em; color:var(--muted); text-transform:uppercase;">Major Cloud Service Providers Comparison</div>
+      <table style="border:1px solid var(--border); border-top:none; border-radius:0 0 6px 6px; overflow:hidden">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Key Services</th>
+            <th>Strengths</th>
+            <th>Market Share</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Amazon Web Services (AWS)</td>
+            <td>EC2, S3, RDS, Lambda, EKS</td>
+            <td>Broadest service catalog, mature ecosystem, global reach</td>
+            <td>~32%</td>
+          </tr>
+          <tr>
+            <td>Microsoft Azure</td>
+            <td>Azure VMs, Blob Storage, AKS, Azure Functions</td>
+            <td>Enterprise integration, Active Directory, hybrid cloud</td>
+            <td>~23%</td>
+          </tr>
+          <tr>
+            <td>Google Cloud (GCP / App Engine)</td>
+            <td>Compute Engine, GKE, BigQuery, Cloud Run</td>
+            <td>Data analytics, ML/AI, Kubernetes (invented it), networking</td>
+            <td>~12%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     UNIT II
+═══════════════════════════════════════════════ -->
+<section class="unit u2" id="u2">
+  <div class="container">
+    <div class="unit-header">
+      <div class="unit-number">UNIT · II</div>
+      <div class="unit-title-block">
+        <h2>Cloud Enabling Technologies</h2>
+        <span class="unit-tag">Parallel Computing · Distributed Systems · SOA · Web Services · RPC</span>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card full">
+        <h3>Ubiquitous Internet & Why It Enables Cloud</h3>
+        <p>Cloud computing fundamentally depends on pervasive, high-speed internet connectivity. The proliferation of broadband, mobile networks (4G/5G), and Wi-Fi means any device can access cloud resources anywhere. Without ubiquitous internet, the "thin client" model of cloud breaks down — you'd need local compute for everything.</p>
+      </div>
+
+      <div class="topic-card">
+        <h3>Parallel Computing</h3>
+        <p>Executing multiple computations simultaneously. Cloud datacenters run massively parallel workloads. Key elements:</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">Task parallelism</span>
+          <span class="pill">Data parallelism</span>
+          <span class="pill">Pipeline parallelism</span>
+          <span class="pill">Synchronization</span>
+        </div>
+        <div class="example-box green" style="margin-top:1rem">
+          <div class="ex-label">Example</div>
+          Rendering a 4K video: each frame processed simultaneously across hundreds of CPU cores in parallel — minutes instead of hours.
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <h3>Distributed Computing</h3>
+        <p>Multiple computers working together over a network, appearing to users as a single coherent system. Cloud platforms are distributed systems at planetary scale.</p>
+        <p style="margin-top:0.5rem">Key challenges: <strong>consistency, availability, partition tolerance</strong> (CAP theorem).</p>
+        <div class="example-box green" style="margin-top:1rem">
+          <div class="ex-label">Example</div>
+          Google Search: a single query touches thousands of servers across multiple datacenters in milliseconds.
+        </div>
+      </div>
+    </div>
+
+    <!-- Flynn's Taxonomy Diagram -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Flynn's Taxonomy — Hardware Architectures for Parallel Computing</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- SISD -->
+          <rect x="20" y="20" width="170" height="210" rx="6" fill="#134e4a22" stroke="#06d6a0" stroke-width="1"/>
+          <text x="105" y="48" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="600">SISD</text>
+          <text x="105" y="64" text-anchor="middle" fill="#64748b" font-size="9">Single Instruction</text>
+          <text x="105" y="78" text-anchor="middle" fill="#64748b" font-size="9">Single Data</text>
+          <!-- CPU -->
+          <rect x="55" y="100" width="100" height="30" rx="3" fill="#06d6a033" stroke="#06d6a0" stroke-width="1"/>
+          <text x="105" y="120" text-anchor="middle" fill="#6ee7b7" font-size="10">CPU</text>
+          <!-- Data flow -->
+          <text x="105" y="160" text-anchor="middle" fill="#3d5068" font-size="9">→ I → D → CPU</text>
+          <text x="105" y="210" text-anchor="middle" fill="#3d5068" font-size="8">Classic von Neumann</text>
+          <text x="105" y="222" text-anchor="middle" fill="#3d5068" font-size="8">Single-core CPU</text>
+
+          <!-- SIMD -->
+          <rect x="205" y="20" width="170" height="210" rx="6" fill="#1e3a5f33" stroke="#3b82f6" stroke-width="1"/>
+          <text x="290" y="48" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="600">SIMD</text>
+          <text x="290" y="64" text-anchor="middle" fill="#64748b" font-size="9">Single Instruction</text>
+          <text x="290" y="78" text-anchor="middle" fill="#64748b" font-size="9">Multiple Data</text>
+          <rect x="230" y="100" width="50" height="20" rx="2" fill="#3b82f633" stroke="#3b82f6" stroke-width="1"/>
+          <text x="255" y="114" text-anchor="middle" fill="#93c5fd" font-size="8">D1</text>
+          <rect x="295" y="100" width="50" height="20" rx="2" fill="#3b82f633" stroke="#3b82f6" stroke-width="1"/>
+          <text x="320" y="114" text-anchor="middle" fill="#93c5fd" font-size="8">D2</text>
+          <rect x="240" y="135" width="100" height="22" rx="2" fill="#3b82f644" stroke="#3b82f6" stroke-width="1"/>
+          <text x="290" y="150" text-anchor="middle" fill="#93c5fd" font-size="9">Same Instruction</text>
+          <text x="290" y="210" text-anchor="middle" fill="#3d5068" font-size="8">GPU / Vector processors</text>
+          <text x="290" y="222" text-anchor="middle" fill="#3d5068" font-size="8">Image/ML processing</text>
+
+          <!-- MISD -->
+          <rect x="390" y="20" width="170" height="210" rx="6" fill="#45030311" stroke="#ef4444" stroke-width="1"/>
+          <text x="475" y="48" text-anchor="middle" fill="#fca5a5" font-size="12" font-weight="600">MISD</text>
+          <text x="475" y="64" text-anchor="middle" fill="#64748b" font-size="9">Multiple Instructions</text>
+          <text x="475" y="78" text-anchor="middle" fill="#64748b" font-size="9">Single Data</text>
+          <rect x="415" y="100" width="50" height="20" rx="2" fill="#ef444433" stroke="#ef4444" stroke-width="1"/>
+          <text x="440" y="114" text-anchor="middle" fill="#fca5a5" font-size="8">I1</text>
+          <rect x="480" y="100" width="50" height="20" rx="2" fill="#ef444433" stroke="#ef4444" stroke-width="1"/>
+          <text x="505" y="114" text-anchor="middle" fill="#fca5a5" font-size="8">I2</text>
+          <rect x="425" y="135" width="100" height="22" rx="2" fill="#ef444422" stroke="#ef4444" stroke-width="1"/>
+          <text x="475" y="150" text-anchor="middle" fill="#fca5a5" font-size="9">Same Data</text>
+          <text x="475" y="210" text-anchor="middle" fill="#3d5068" font-size="8">Fault-tolerant systems</text>
+          <text x="475" y="222" text-anchor="middle" fill="#3d5068" font-size="8">Rarely used</text>
+
+          <!-- MIMD -->
+          <rect x="575" y="20" width="205" height="210" rx="6" fill="#f59e0b11" stroke="#f59e0b" stroke-width="1"/>
+          <text x="677" y="48" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="600">MIMD</text>
+          <text x="677" y="64" text-anchor="middle" fill="#64748b" font-size="9">Multiple Instructions</text>
+          <text x="677" y="78" text-anchor="middle" fill="#64748b" font-size="9">Multiple Data</text>
+          <rect x="590" y="100" width="55" height="40" rx="2" fill="#f59e0b22" stroke="#f59e0b" stroke-width="1"/>
+          <text x="617" y="118" text-anchor="middle" fill="#fcd34d" font-size="8">CPU1</text>
+          <text x="617" y="132" text-anchor="middle" fill="#64748b" font-size="7">I1+D1</text>
+          <rect x="655" y="100" width="55" height="40" rx="2" fill="#f59e0b22" stroke="#f59e0b" stroke-width="1"/>
+          <text x="682" y="118" text-anchor="middle" fill="#fcd34d" font-size="8">CPU2</text>
+          <text x="682" y="132" text-anchor="middle" fill="#64748b" font-size="7">I2+D2</text>
+          <rect x="723" y="100" width="45" height="40" rx="2" fill="#f59e0b22" stroke="#f59e0b" stroke-width="1"/>
+          <text x="745" y="118" text-anchor="middle" fill="#fcd34d" font-size="8">CPU3</text>
+          <text x="745" y="132" text-anchor="middle" fill="#64748b" font-size="7">...</text>
+          <text x="677" y="210" text-anchor="middle" fill="#3d5068" font-size="8">Multi-core CPUs</text>
+          <text x="677" y="222" text-anchor="middle" fill="#3d5068" font-size="8">Modern cloud servers</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>Remote Procedure Calls (RPC)</h3>
+        <p>A protocol allowing a program to execute a procedure on a remote server as if it were local. The calling code has no awareness of the network underneath.</p>
+        <div class="code-block">
+<span class="cm">// Client calls remote function — looks local</span>
+result = <span class="kw">remote_server</span>.calculateTax(income, year)
+
+<span class="cm">// Under the hood: serialization → network → deserialization → execute → return</span>
+</div>
+        <p>Modern implementations: <strong>gRPC</strong> (Google, uses Protocol Buffers), <strong>JSON-RPC</strong>, <strong>XML-RPC</strong>.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Service-Oriented Architecture (SOA)</h3>
+        <p>An architectural style where software is structured as a collection of loosely coupled, interoperable services that communicate over a network. Each service encapsulates a business capability.</p>
+        <p style="margin-top:0.75rem">SOA principles: <strong>loose coupling, reusability, discoverability, interoperability</strong>. SOA is the philosophical backbone of modern cloud APIs and microservices.</p>
+        <div class="example-box green" style="margin-top:1rem">
+          <div class="ex-label">Example</div>
+          An e-commerce platform: separate services for inventory, payments, shipping, notifications — each communicating via defined contracts.
+        </div>
+      </div>
+      <div class="topic-card">
+        <h3>Web Services</h3>
+        <p>Standardized means for machines to communicate over a network. Two main flavors:</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">SOAP (XML-based, strict)</span>
+          <span class="pill">REST (HTTP, flexible)</span>
+          <span class="pill">GraphQL (query-based)</span>
+        </div>
+        <p style="margin-top:0.75rem">REST APIs are the dominant interface for cloud services today. AWS, Azure, and GCP all expose management APIs over REST/HTTPS.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Inter-Process Communication (IPC)</h3>
+        <p>Mechanisms for processes to exchange data and coordinate actions. In distributed cloud environments, IPC happens across machine boundaries.</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">Message Queues (SQS)</span>
+          <span class="pill">Shared Memory</span>
+          <span class="pill">Sockets / TCP</span>
+          <span class="pill">Pipes</span>
+          <span class="pill">Pub/Sub (Kafka)</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     UNIT III
+═══════════════════════════════════════════════ -->
+<section class="unit u3" id="u3">
+  <div class="container">
+    <div class="unit-header">
+      <div class="unit-number">UNIT · III</div>
+      <div class="unit-title-block">
+        <h2>Virtualization and Containers</h2>
+        <span class="unit-tag">Hypervisors · XEN · VMware · Docker · Kubernetes · EC2 · ECS</span>
+      </div>
+    </div>
+
+    <!-- Virtualization Architecture Diagram -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Virtualization Architecture: Type 1 vs Type 2 Hypervisor</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Type 1 -->
+          <text x="200" y="20" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="600">Type 1 (Bare Metal)</text>
+          <rect x="40" y="30" width="320" height="50" rx="4" fill="#f59e0b22" stroke="#f59e0b" stroke-width="1"/>
+          <text x="200" y="60" text-anchor="middle" fill="#fcd34d" font-size="11">Hypervisor (XEN, VMware ESXi)</text>
+          <rect x="40" y="90" width="95" height="170" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <text x="87" y="115" text-anchor="middle" fill="#9ca3af" font-size="9">Guest OS</text>
+          <rect x="48" y="125" width="79" height="30" rx="3" fill="#1f2937" stroke="#4b5563" stroke-width="1"/>
+          <text x="87" y="144" text-anchor="middle" fill="#6b7280" font-size="8">App A</text>
+          <rect x="48" y="160" width="79" height="30" rx="3" fill="#1f2937" stroke="#4b5563" stroke-width="1"/>
+          <text x="87" y="179" text-anchor="middle" fill="#6b7280" font-size="8">App B</text>
+
+          <rect x="145" y="90" width="95" height="170" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <text x="192" y="115" text-anchor="middle" fill="#9ca3af" font-size="9">Guest OS</text>
+          <rect x="153" y="125" width="79" height="30" rx="3" fill="#1f2937" stroke="#4b5563" stroke-width="1"/>
+          <text x="192" y="144" text-anchor="middle" fill="#6b7280" font-size="8">App C</text>
+          <rect x="153" y="160" width="79" height="30" rx="3" fill="#1f2937" stroke="#4b5563" stroke-width="1"/>
+          <text x="192" y="179" text-anchor="middle" fill="#6b7280" font-size="8">App D</text>
+
+          <rect x="250" y="90" width="95" height="170" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <text x="297" y="115" text-anchor="middle" fill="#9ca3af" font-size="9">Guest OS</text>
+          <rect x="258" y="125" width="79" height="30" rx="3" fill="#1f2937" stroke="#4b5563" stroke-width="1"/>
+          <text x="297" y="144" text-anchor="middle" fill="#6b7280" font-size="8">App E</text>
+
+          <rect x="40" y="270" width="320" height="22" rx="3" fill="#292524" stroke="#44403c" stroke-width="1"/>
+          <text x="200" y="285" text-anchor="middle" fill="#78716c" font-size="10">Physical Hardware</text>
+
+          <!-- Type 2 -->
+          <text x="600" y="20" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="600">Type 2 (Hosted)</text>
+          <rect x="440" y="30" width="320" height="35" rx="4" fill="#134e4a33" stroke="#06d6a0" stroke-width="1"/>
+          <text x="600" y="52" text-anchor="middle" fill="#6ee7b7" font-size="11">Host OS (Windows/Linux/macOS)</text>
+          <rect x="440" y="73" width="320" height="30" rx="4" fill="#134e4a22" stroke="#06d6a055" stroke-width="1"/>
+          <text x="600" y="92" text-anchor="middle" fill="#6ee7b7" font-size="10">Hypervisor (VirtualBox, VMware Workstation)</text>
+          <rect x="448" y="111" width="95" height="140" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <text x="495" y="133" text-anchor="middle" fill="#9ca3af" font-size="9">Guest OS</text>
+          <rect x="455" y="143" width="79" height="25" rx="3" fill="#1f2937" stroke="#4b5563" stroke-width="1"/>
+          <text x="494" y="160" text-anchor="middle" fill="#6b7280" font-size="8">App A</text>
+
+          <rect x="553" y="111" width="95" height="140" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <text x="600" y="133" text-anchor="middle" fill="#9ca3af" font-size="9">Guest OS</text>
+          <rect x="560" y="143" width="79" height="25" rx="3" fill="#1f2937" stroke="#4b5563" stroke-width="1"/>
+          <text x="599" y="160" text-anchor="middle" fill="#6b7280" font-size="8">App B</text>
+
+          <rect x="440" y="260" width="320" height="22" rx="3" fill="#292524" stroke="#44403c" stroke-width="1"/>
+          <text x="600" y="275" text-anchor="middle" fill="#78716c" font-size="10">Physical Hardware</text>
+
+          <text x="200" y="298" text-anchor="middle" fill="#f59e0b" font-size="9">Better performance (XEN, ESXi used in AWS, Azure)</text>
+          <text x="600" y="298" text-anchor="middle" fill="#06d6a0" font-size="9">Good for dev/test (VirtualBox, VMware Workstation)</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>XEN Hypervisor</h3>
+        <p>An open-source Type 1 hypervisor. Uses <strong>paravirtualization</strong> — guest OSes are modified to be "aware" they're virtualized, calling the hypervisor directly instead of hardware. Results in near-native performance.</p>
+        <p style="margin-top:0.5rem">AWS originally built EC2 on Xen before migrating to their custom Nitro hypervisor. Still widely used in many cloud providers.</p>
+      </div>
+      <div class="topic-card">
+        <h3>VMware vSphere / ESXi</h3>
+        <p>Enterprise-grade Type 1 hypervisor and virtualization platform. Dominant in private cloud and on-premises datacenters.</p>
+        <p style="margin-top:0.5rem">Key components: <strong>ESXi</strong> (hypervisor), <strong>vCenter</strong> (management), <strong>vMotion</strong> (live VM migration), <strong>vSAN</strong> (distributed storage).</p>
+        <div class="example-box amber" style="margin-top:1rem">
+          <div class="ex-label">Use Case</div>
+          A bank runs its core banking system on VMware private cloud — full hardware control, security isolation, compliance.
+        </div>
+      </div>
+    </div>
+
+    <!-- VMs vs Containers Diagram -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">VMs vs Containers — Architecture Comparison</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 800 310" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- VM side -->
+          <text x="200" y="20" text-anchor="middle" fill="#fcd34d" font-size="13" font-weight="600">Virtual Machines</text>
+          <!-- VM1 -->
+          <rect x="20" y="30" width="130" height="200" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <rect x="28" y="38" width="114" height="20" rx="2" fill="#f59e0b22" stroke="#f59e0b55" stroke-width="1"/>
+          <text x="85" y="52" text-anchor="middle" fill="#fcd34d" font-size="9">App A</text>
+          <rect x="28" y="62" width="114" height="20" rx="2" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+          <text x="85" y="76" text-anchor="middle" fill="#9ca3af" font-size="8">Bins/Libs</text>
+          <rect x="28" y="86" width="114" height="25" rx="2" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+          <text x="85" y="102" text-anchor="middle" fill="#6b7280" font-size="8">Guest OS (Linux)</text>
+          <!-- VM2 -->
+          <rect x="160" y="30" width="130" height="200" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <rect x="168" y="38" width="114" height="20" rx="2" fill="#f59e0b22" stroke="#f59e0b55" stroke-width="1"/>
+          <text x="225" y="52" text-anchor="middle" fill="#fcd34d" font-size="9">App B</text>
+          <rect x="168" y="62" width="114" height="20" rx="2" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+          <text x="225" y="76" text-anchor="middle" fill="#9ca3af" font-size="8">Bins/Libs</text>
+          <rect x="168" y="86" width="114" height="25" rx="2" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+          <text x="225" y="102" text-anchor="middle" fill="#6b7280" font-size="8">Guest OS (Windows)</text>
+
+          <rect x="20" y="238" width="270" height="28" rx="4" fill="#f59e0b33" stroke="#f59e0b" stroke-width="1"/>
+          <text x="155" y="256" text-anchor="middle" fill="#fcd34d" font-size="10">Hypervisor (Type 1 or 2)</text>
+          <rect x="20" y="272" width="270" height="22" rx="3" fill="#292524" stroke="#44403c" stroke-width="1"/>
+          <text x="155" y="287" text-anchor="middle" fill="#78716c" font-size="9">Physical Hardware</text>
+
+          <!-- Container side -->
+          <text x="600" y="20" text-anchor="middle" fill="#6ee7b7" font-size="13" font-weight="600">Containers</text>
+          <!-- C1 -->
+          <rect x="450" y="30" width="100" height="130" rx="4" fill="#134e4a22" stroke="#06d6a0" stroke-width="1"/>
+          <rect x="458" y="38" width="84" height="18" rx="2" fill="#06d6a033" stroke="#06d6a0" stroke-width="1"/>
+          <text x="500" y="51" text-anchor="middle" fill="#6ee7b7" font-size="8">App A</text>
+          <rect x="458" y="60" width="84" height="18" rx="2" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+          <text x="500" y="73" text-anchor="middle" fill="#9ca3af" font-size="8">Bins/Libs</text>
+          <!-- C2 -->
+          <rect x="560" y="30" width="100" height="130" rx="4" fill="#134e4a22" stroke="#06d6a0" stroke-width="1"/>
+          <rect x="568" y="38" width="84" height="18" rx="2" fill="#06d6a033" stroke="#06d6a0" stroke-width="1"/>
+          <text x="610" y="51" text-anchor="middle" fill="#6ee7b7" font-size="8">App B</text>
+          <rect x="568" y="60" width="84" height="18" rx="2" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+          <text x="610" y="73" text-anchor="middle" fill="#9ca3af" font-size="8">Bins/Libs</text>
+          <!-- C3 -->
+          <rect x="670" y="30" width="100" height="130" rx="4" fill="#134e4a22" stroke="#06d6a0" stroke-width="1"/>
+          <rect x="678" y="38" width="84" height="18" rx="2" fill="#06d6a033" stroke="#06d6a0" stroke-width="1"/>
+          <text x="720" y="51" text-anchor="middle" fill="#6ee7b7" font-size="8">App C</text>
+          <rect x="678" y="60" width="84" height="18" rx="2" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+          <text x="720" y="73" text-anchor="middle" fill="#9ca3af" font-size="8">Bins/Libs</text>
+
+          <rect x="450" y="168" width="320" height="28" rx="4" fill="#134e4a33" stroke="#06d6a0" stroke-width="1"/>
+          <text x="610" y="186" text-anchor="middle" fill="#6ee7b7" font-size="10">Container Runtime (Docker Engine)</text>
+          <rect x="450" y="202" width="320" height="28" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <text x="610" y="220" text-anchor="middle" fill="#9ca3af" font-size="10">Host OS (shared kernel)</text>
+          <rect x="450" y="236" width="320" height="28" rx="4" fill="#292524" stroke="#44403c" stroke-width="1"/>
+          <text x="610" y="254" text-anchor="middle" fill="#78716c" font-size="9">Physical Hardware</text>
+
+          <!-- Comparison text -->
+          <text x="155" y="305" text-anchor="middle" fill="#f59e0b" font-size="9">Heavier · Slower start · Full isolation · GB-sized images</text>
+          <text x="610" y="285" text-anchor="middle" fill="#06d6a0" font-size="9">Lightweight · ms startup · Process isolation · MB-sized images</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>Docker</h3>
+        <p>The dominant container platform. Packages an application and its dependencies into a <strong>container image</strong> — a portable, reproducible unit that runs identically anywhere Docker is installed.</p>
+        <div class="code-block">
+<span class="cm"># Dockerfile — defines the image</span>
+<span class="kw">FROM</span> python:3.11-slim
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> . .
+<span class="kw">RUN</span> pip install -r requirements.txt
+<span class="kw">CMD</span> [<span class="str">"python"</span>, <span class="str">"app.py"</span>]
+
+<span class="cm"># Build and run</span>
+docker build -t myapp .
+docker run -p 8080:8080 myapp
+</div>
+      </div>
+      <div class="topic-card">
+        <h3>LXC — Linux Containers</h3>
+        <p>The precursor to Docker. Provides OS-level virtualization by allowing multiple isolated Linux systems on a single host. Uses Linux kernel features: <strong>cgroups</strong> (resource limiting) and <strong>namespaces</strong> (isolation).</p>
+        <p style="margin-top:0.75rem">Docker originally used LXC as its execution engine before building its own <strong>libcontainer</strong> runtime. LXC is still used for full-OS container scenarios.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Kubernetes (K8s)</h3>
+        <p>Container orchestration platform. Automates deployment, scaling, and management of containerized applications across a cluster of machines.</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">Pod scheduling</span>
+          <span class="pill">Auto-scaling (HPA)</span>
+          <span class="pill">Self-healing</span>
+          <span class="pill">Load balancing</span>
+          <span class="pill">Rolling updates</span>
+          <span class="pill">Service discovery</span>
+        </div>
+        <div class="example-box amber" style="margin-top:1rem">
+          <div class="ex-label">Use Case</div>
+          Spotify runs thousands of microservices on Kubernetes — auto-scaling during peak hours, self-healing on failures.
+        </div>
+      </div>
+      <div class="topic-card">
+        <h3>Docker Swarm vs Kubernetes</h3>
+        <div class="table-wrap" style="margin-top:0.5rem">
+          <table>
+            <thead><tr><th>Feature</th><th>Docker Swarm</th><th>Kubernetes</th></tr></thead>
+            <tbody>
+              <tr><td>Complexity</td><td>Simple</td><td>Complex</td></tr>
+              <tr><td>Scale</td><td>Medium</td><td>Large/Enterprise</td></tr>
+              <tr><td>Setup</td><td>Minutes</td><td>Hours/days</td></tr>
+              <tr><td>Ecosystem</td><td>Limited</td><td>Massive</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>Amazon EC2 (IaaS)</h3>
+        <p>Elastic Compute Cloud — AWS's VM offering. Choose from 500+ instance types. Supports Linux/Windows. Pay per second. Used for anything needing full OS control: databases, custom servers, ML training.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Amazon ECS (Container Service)</h3>
+        <p>Elastic Container Service — AWS's managed container platform. Run Docker containers without managing a Kubernetes cluster. Integrates natively with IAM, ALB, CloudWatch. Fargate mode = serverless containers (no EC2 management at all).</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     UNIT IV
+═══════════════════════════════════════════════ -->
+<section class="unit u4" id="u4">
+  <div class="container">
+    <div class="unit-header">
+      <div class="unit-number">UNIT · IV</div>
+      <div class="unit-title-block">
+        <h2>Cloud Computing Challenges</h2>
+        <span class="unit-tag">Economics · Interoperability · Security · Federated Clouds · Fault Tolerance</span>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>Economics of the Cloud</h3>
+        <p>Cloud shifts IT from <strong>CapEx</strong> (buying hardware) to <strong>OpEx</strong> (paying for usage). Key economic concepts:</p>
+        <p style="margin-top:0.75rem"><strong>Economies of scale:</strong> AWS buys hardware at volumes that reduce per-unit cost by 40–60% vs. enterprise buyers. These savings are partially passed to customers.</p>
+        <p style="margin-top:0.5rem"><strong>TCO vs. sticker price:</strong> Cloud appears expensive until you account for datacenter costs, cooling, power, staff, and hardware refresh cycles.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Cloud Interoperability & Standards</h3>
+        <p>The ability to move workloads between cloud providers without lock-in. A significant unresolved challenge.</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">OVF (Open Virtualization Format)</span>
+          <span class="pill">TOSCA (topology standard)</span>
+          <span class="pill">CDMI (Cloud Data Mgmt)</span>
+          <span class="pill">Kubernetes (portability)</span>
+        </div>
+        <p style="margin-top:0.75rem"><strong>Reality:</strong> Proprietary managed services (AWS RDS, Azure Cosmos DB) create deep lock-in. True portability requires discipline and often sacrificing convenience.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Scalability & Fault Tolerance</h3>
+        <p><strong>Horizontal scaling:</strong> Add more machines. <strong>Vertical scaling:</strong> Bigger machines. Cloud excels at horizontal.</p>
+        <p style="margin-top:0.5rem"><strong>Fault tolerance patterns:</strong></p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">Replication</span>
+          <span class="pill">Circuit breakers</span>
+          <span class="pill">Retry with backoff</span>
+          <span class="pill">Multi-AZ deployment</span>
+          <span class="pill">Health checks</span>
+        </div>
+        <div class="example-box pink" style="margin-top:1rem">
+          <div class="ex-label">Example</div>
+          AWS designs every service assuming individual components will fail. S3 achieves 99.999999999% (11 nines) durability through automatic replication.
+        </div>
+      </div>
+      <div class="topic-card">
+        <h3>Federated Clouds</h3>
+        <p>A model where multiple cloud providers collaborate to offer seamless resource sharing across their infrastructures. Users experience a unified pool of resources that spans provider boundaries.</p>
+        <p style="margin-top:0.5rem">Enables: disaster recovery across providers, avoiding single-vendor risk, geographic coverage gaps filled by federation partners.</p>
+        <p style="margin-top:0.5rem"><strong>Challenge:</strong> Identity federation, billing reconciliation, and consistent APIs across providers are unsolved at scale.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Energy Efficiency in Clouds</h3>
+        <p>Hyperscale datacenters consume enormous power. Key metrics and approaches:</p>
+        <p style="margin-top:0.5rem"><strong>PUE (Power Usage Effectiveness):</strong> Total facility power ÷ IT equipment power. Lower is better. Google achieves ~1.10 vs. industry average ~1.58.</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">Liquid cooling</span>
+          <span class="pill">Renewable energy PPAs</span>
+          <span class="pill">Server consolidation via VMs</span>
+          <span class="pill">Custom silicon (AWS Graviton)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shared Responsibility Model -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Cloud Shared Responsibility Model (AWS-style)</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Customer Responsibility -->
+          <rect x="20" y="10" width="350" height="290" rx="6" fill="#f472b611" stroke="#f472b6" stroke-width="1.5"/>
+          <text x="195" y="38" text-anchor="middle" fill="#f9a8d4" font-size="12" font-weight="600">Customer Responsibility</text>
+          <text x="195" y="55" text-anchor="middle" fill="#64748b" font-size="9">"Security IN the cloud"</text>
+
+          <rect x="35" y="65" width="320" height="28" rx="3" fill="#f472b633" stroke="#f472b6" stroke-width="1"/>
+          <text x="195" y="83" text-anchor="middle" fill="#f9a8d4" font-size="10">Customer Data</text>
+
+          <rect x="35" y="100" width="320" height="28" rx="3" fill="#f472b622" stroke="#f472b655" stroke-width="1"/>
+          <text x="195" y="118" text-anchor="middle" fill="#f9a8d4" font-size="10">Identity & Access Management (IAM)</text>
+
+          <rect x="35" y="135" width="320" height="28" rx="3" fill="#f472b622" stroke="#f472b655" stroke-width="1"/>
+          <text x="195" y="153" text-anchor="middle" fill="#f9a8d4" font-size="10">Application-level configuration & encryption</text>
+
+          <rect x="35" y="170" width="320" height="28" rx="3" fill="#f472b611" stroke="#f472b633" stroke-width="1"/>
+          <text x="195" y="188" text-anchor="middle" fill="#9ca3af" font-size="10">OS patching (EC2), network config, firewall rules</text>
+
+          <rect x="35" y="205" width="320" height="28" rx="3" fill="#f472b611" stroke="#f472b633" stroke-width="1"/>
+          <text x="195" y="223" text-anchor="middle" fill="#9ca3af" font-size="10">Client-side data encryption & integrity</text>
+
+          <!-- Provider Responsibility -->
+          <rect x="430" y="10" width="350" height="290" rx="6" fill="#1e3a5f44" stroke="#3b82f6" stroke-width="1.5"/>
+          <text x="605" y="38" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="600">Provider Responsibility</text>
+          <text x="605" y="55" text-anchor="middle" fill="#64748b" font-size="9">"Security OF the cloud"</text>
+
+          <rect x="445" y="65" width="320" height="28" rx="3" fill="#3b82f633" stroke="#3b82f6" stroke-width="1"/>
+          <text x="605" y="83" text-anchor="middle" fill="#93c5fd" font-size="10">Physical Datacenters & Facilities</text>
+
+          <rect x="445" y="100" width="320" height="28" rx="3" fill="#3b82f622" stroke="#3b82f655" stroke-width="1"/>
+          <text x="605" y="118" text-anchor="middle" fill="#93c5fd" font-size="10">Hardware (Compute, Storage, Networking)</text>
+
+          <rect x="445" y="135" width="320" height="28" rx="3" fill="#3b82f622" stroke="#3b82f655" stroke-width="1"/>
+          <text x="605" y="153" text-anchor="middle" fill="#93c5fd" font-size="10">Hypervisor & host OS</text>
+
+          <rect x="445" y="170" width="320" height="28" rx="3" fill="#3b82f611" stroke="#3b82f633" stroke-width="1"/>
+          <text x="605" y="188" text-anchor="middle" fill="#9ca3af" font-size="10">Managed service infrastructure (RDS engine, S3)</text>
+
+          <rect x="445" y="205" width="320" height="28" rx="3" fill="#3b82f611" stroke="#3b82f633" stroke-width="1"/>
+          <text x="605" y="223" text-anchor="middle" fill="#9ca3af" font-size="10">Global network infrastructure & DDoS protection</text>
+
+          <!-- Middle arrow -->
+          <text x="400" y="165" text-anchor="middle" fill="#4b5563" font-size="18">⟺</text>
+          <text x="400" y="185" text-anchor="middle" fill="#3d5068" font-size="9">Shared</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card full">
+        <h3>Cloud Security Architecture</h3>
+        <p>Defense-in-depth approach: security controls at every layer, assuming breach at any single layer. Key components:</p>
+        <div class="pill-list" style="margin-top:0.75rem">
+          <span class="pill">Identity & Access (IAM/RBAC)</span>
+          <span class="pill">Network security groups</span>
+          <span class="pill">Encryption at rest & in transit</span>
+          <span class="pill">SIEM / logging (CloudTrail)</span>
+          <span class="pill">WAF (Web App Firewall)</span>
+          <span class="pill">Zero Trust architecture</span>
+          <span class="pill">Secrets management (Vault)</span>
+          <span class="pill">Vulnerability scanning</span>
+        </div>
+        <div class="example-box pink" style="margin-top:1.25rem">
+          <div class="ex-label">Security in Deployment Models</div>
+          <strong>Public cloud:</strong> Provider handles physical security, customer handles IAM and data encryption. Risk: misconfigured S3 buckets exposed publicly — a common breach vector. <strong>Private cloud:</strong> Organization handles full stack security — more control but higher operational burden. <strong>Hybrid:</strong> Security policies must span both environments consistently, requiring unified identity and logging.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     UNIT V
+═══════════════════════════════════════════════ -->
+<section class="unit u5" id="u5">
+  <div class="container">
+    <div class="unit-header">
+      <div class="unit-number">UNIT · V</div>
+      <div class="unit-title-block">
+        <h2>Advanced Concepts in Cloud Computing</h2>
+        <span class="unit-tag">Serverless · IoT · Edge/Fog · DevOps · Quantum Cloud</span>
+      </div>
+    </div>
+
+    <!-- Serverless Architecture Diagram -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Serverless / FaaS Architecture (AWS Lambda Example)</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Event Source -->
+          <rect x="20" y="60" width="130" height="80" rx="6" fill="#a855f722" stroke="#a855f7" stroke-width="1.5"/>
+          <text x="85" y="93" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="600">Event Source</text>
+          <text x="85" y="110" text-anchor="middle" fill="#64748b" font-size="9">HTTP Request</text>
+          <text x="85" y="125" text-anchor="middle" fill="#64748b" font-size="9">S3 Upload / Timer</text>
+
+          <!-- Arrow -->
+          <line x1="155" y1="100" x2="200" y2="100" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrowp)"/>
+          <defs>
+            <marker id="arrowp" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#a855f7"/>
+            </marker>
+          </defs>
+
+          <!-- Trigger -->
+          <rect x="205" y="70" width="110" height="60" rx="4" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <text x="260" y="100" text-anchor="middle" fill="#9ca3af" font-size="9">API Gateway</text>
+          <text x="260" y="115" text-anchor="middle" fill="#64748b" font-size="8">Route + Auth</text>
+          <line x1="320" y1="100" x2="360" y2="100" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrowp)"/>
+
+          <!-- Lambda -->
+          <rect x="365" y="40" width="190" height="120" rx="6" fill="#a855f733" stroke="#a855f7" stroke-width="2"/>
+          <text x="460" y="67" text-anchor="middle" fill="#c084fc" font-size="12" font-weight="600">AWS Lambda</text>
+          <text x="460" y="85" text-anchor="middle" fill="#9ca3af" font-size="9">Function code executes</text>
+          <text x="460" y="100" text-anchor="middle" fill="#9ca3af" font-size="9">Auto-scales 0 → ∞</text>
+          <text x="460" y="115" text-anchor="middle" fill="#9ca3af" font-size="9">Pay per 100ms execution</text>
+          <text x="460" y="135" text-anchor="middle" fill="#64748b" font-size="8">No servers to manage</text>
+          <line x1="558" y1="100" x2="595" y2="100" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrowp)"/>
+
+          <!-- Results -->
+          <rect x="600" y="55" width="180" height="90" rx="6" fill="#1a2234" stroke="#374151" stroke-width="1"/>
+          <text x="690" y="80" text-anchor="middle" fill="#c084fc" font-size="10" font-weight="600">Downstream Services</text>
+          <text x="690" y="98" text-anchor="middle" fill="#64748b" font-size="9">DynamoDB · S3 · SES</text>
+          <text x="690" y="113" text-anchor="middle" fill="#64748b" font-size="9">SNS · Other Lambdas</text>
+          <text x="690" y="128" text-anchor="middle" fill="#64748b" font-size="9">→ Response to client</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>Serverless Computing</h3>
+        <p>A cloud execution model where the provider dynamically manages infrastructure allocation. Developers write functions, not servers. Key properties:</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">Event-driven</span>
+          <span class="pill">Scales to zero</span>
+          <span class="pill">No idle cost</span>
+          <span class="pill">Stateless by default</span>
+          <span class="pill">Cold start latency</span>
+        </div>
+        <p style="margin-top:0.75rem"><strong>AWS Lambda:</strong> Runs Node.js, Python, Java, Go, etc. Max 15 minutes per invocation. 1M free requests/month.</p>
+        <p style="margin-top:0.5rem"><strong>OpenFaaS:</strong> Open-source FaaS platform you can self-host on Kubernetes. Vendor-neutral alternative to Lambda.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Internet of Things (IoT) & Cloud</h3>
+        <p>IoT devices generate continuous streams of sensor data that cloud platforms ingest, store, and analyze at scale.</p>
+        <p style="margin-top:0.5rem"><strong>Cloud-centric IoT layers:</strong></p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">Perception (sensors)</span>
+          <span class="pill">Network (connectivity)</span>
+          <span class="pill">Processing (cloud/edge)</span>
+          <span class="pill">Application layer</span>
+        </div>
+        <div class="example-box purple" style="margin-top:1rem">
+          <div class="ex-label">Example</div>
+          Smart factory: 10,000 sensors → AWS IoT Core → Kinesis Data Streams → Lambda → real-time anomaly detection → alert.
+        </div>
+      </div>
+    </div>
+
+    <!-- Edge/Fog Diagram -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Edge vs Fog vs Cloud Computing Continuum</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Device / Edge -->
+          <rect x="20" y="30" width="160" height="170" rx="6" fill="#a855f711" stroke="#a855f7" stroke-width="1.5"/>
+          <text x="100" y="56" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="600">Edge Layer</text>
+          <text x="100" y="74" text-anchor="middle" fill="#64748b" font-size="9">On-device computation</text>
+          <rect x="35" y="90" width="130" height="25" rx="3" fill="#a855f722" stroke="#a855f755" stroke-width="1"/>
+          <text x="100" y="106" text-anchor="middle" fill="#c084fc" font-size="9">IoT Device / Sensor</text>
+          <rect x="35" y="120" width="130" height="25" rx="3" fill="#a855f711" stroke="#a855f733" stroke-width="1"/>
+          <text x="100" y="136" text-anchor="middle" fill="#9ca3af" font-size="9">Edge Inference (TFLite)</text>
+          <text x="100" y="185" text-anchor="middle" fill="#64748b" font-size="8">Latency: &lt; 1ms</text>
+          <text x="100" y="198" text-anchor="middle" fill="#64748b" font-size="8">No network dependency</text>
+
+          <!-- Arrow -->
+          <line x1="185" y1="115" x2="220" y2="115" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrowg)"/>
+          <defs>
+            <marker id="arrowg" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#6b7280"/>
+            </marker>
+          </defs>
+
+          <!-- Fog -->
+          <rect x="225" y="30" width="340" height="170" rx="6" fill="#06d6a011" stroke="#06d6a0" stroke-width="1.5"/>
+          <text x="395" y="56" text-anchor="middle" fill="#6ee7b7" font-size="11" font-weight="600">Fog Layer (Local Gateways / Servers)</text>
+          <text x="395" y="74" text-anchor="middle" fill="#64748b" font-size="9">Intermediate compute near the edge</text>
+          <rect x="240" y="90" width="150" height="25" rx="3" fill="#06d6a022" stroke="#06d6a0" stroke-width="1"/>
+          <text x="315" y="106" text-anchor="middle" fill="#6ee7b7" font-size="9">Fog Node / Gateway</text>
+          <rect x="400" y="90" width="150" height="25" rx="3" fill="#06d6a011" stroke="#06d6a055" stroke-width="1"/>
+          <text x="475" y="106" text-anchor="middle" fill="#9ca3af" font-size="9">Local aggregation & filter</text>
+          <rect x="240" y="120" width="310" height="25" rx="3" fill="#06d6a011" stroke="#06d6a033" stroke-width="1"/>
+          <text x="395" y="136" text-anchor="middle" fill="#9ca3af" font-size="9">Cisco IOx, AWS Greengrass, Azure IoT Edge</text>
+          <text x="395" y="185" text-anchor="middle" fill="#64748b" font-size="8">Latency: 10–50ms · Reduces cloud bandwidth costs</text>
+
+          <!-- Arrow -->
+          <line x1="570" y1="115" x2="610" y2="115" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrowg)"/>
+
+          <!-- Cloud -->
+          <rect x="615" y="30" width="165" height="170" rx="6" fill="#3b82f622" stroke="#3b82f6" stroke-width="1.5"/>
+          <text x="697" y="56" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="600">Cloud Layer</text>
+          <text x="697" y="74" text-anchor="middle" fill="#64748b" font-size="9">Centralized massive compute</text>
+          <rect x="630" y="90" width="135" height="25" rx="3" fill="#3b82f633" stroke="#3b82f6" stroke-width="1"/>
+          <text x="697" y="106" text-anchor="middle" fill="#93c5fd" font-size="9">Cloud Data Platform</text>
+          <rect x="630" y="120" width="135" height="25" rx="3" fill="#3b82f611" stroke="#3b82f633" stroke-width="1"/>
+          <text x="697" y="136" text-anchor="middle" fill="#9ca3af" font-size="9">ML training, historical analytics</text>
+          <text x="697" y="185" text-anchor="middle" fill="#64748b" font-size="8">Latency: 100ms+</text>
+          <text x="697" y="198" text-anchor="middle" fill="#64748b" font-size="8">Unlimited scale</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h3>DevOps & Infrastructure as Code (IaC)</h3>
+        <p>DevOps merges development and operations, emphasizing automation, continuous delivery, and shared ownership of systems. Cloud accelerates DevOps by making infrastructure programmable.</p>
+        <p style="margin-top:0.75rem"><strong>IaC</strong> means defining cloud infrastructure in code files — versioned, reviewed, and deployed like software.</p>
+        <div class="code-block">
+<span class="cm"># Terraform (IaC) — provision an AWS EC2 instance</span>
+<span class="kw">resource</span> <span class="str">"aws_instance"</span> <span class="str">"web"</span> {
+  ami           = <span class="str">"ami-0c55b159cbfafe1f0"</span>
+  instance_type = <span class="str">"t3.micro"</span>
+  tags = { Name = <span class="str">"WebServer"</span> }
+}
+</div>
+        <div class="pill-list">
+          <span class="pill">Terraform</span>
+          <span class="pill">AWS CloudFormation</span>
+          <span class="pill">Pulumi</span>
+          <span class="pill">Ansible</span>
+          <span class="pill">Helm (K8s)</span>
+        </div>
+      </div>
+      <div class="topic-card">
+        <h3>Quantum Cloud Computing</h3>
+        <p>Quantum computers use qubits and superposition to solve problems intractable for classical computers. Cloud provides access to quantum hardware via APIs — no need to own the cryogenic hardware.</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">AWS Braket</span>
+          <span class="pill">IBM Quantum (cloud)</span>
+          <span class="pill">Azure Quantum</span>
+          <span class="pill">Google Quantum AI</span>
+        </div>
+        <p style="margin-top:0.75rem"><strong>Current state (2024):</strong> NISQ era — noisy, ~1000 qubits. Useful for optimization, cryptography research, drug discovery simulation. Fault-tolerant quantum is 5–15 years away.</p>
+        <div class="example-box purple" style="margin-top:1rem">
+          <div class="ex-label">Example</div>
+          Running Shor's algorithm on IBM Quantum cloud to factor small numbers — demonstrating quantum advantage over classical approaches.
+        </div>
+      </div>
+      <div class="topic-card">
+        <h3>OpenFaaS — Open-Source Serverless</h3>
+        <p>Run your own FaaS platform on any Kubernetes or Docker Swarm cluster. Functions packaged as Docker containers — any language, any binary.</p>
+        <div class="code-block" style="font-size:0.78rem">
+<span class="cm"># Deploy a function</span>
+faas-cli new --lang python3 myfunction
+faas-cli build -f myfunction.yml
+faas-cli deploy -f myfunction.yml
+</div>
+        <p>Key advantage over AWS Lambda: no vendor lock-in, runs on-premises or any cloud, predictable costs for high-volume workloads.</p>
+      </div>
+      <div class="topic-card">
+        <h3>Edge Computing</h3>
+        <p>Processing data near where it's generated — in the device or a nearby server — rather than sending it to a central cloud datacenter.</p>
+        <p style="margin-top:0.5rem"><strong>Why it matters:</strong> Autonomous vehicles can't wait 100ms for cloud responses. Industrial robots need sub-millisecond control loops. Video analytics at scale would saturate network links.</p>
+        <div class="pill-list" style="margin-top:0.5rem">
+          <span class="pill">AWS Wavelength</span>
+          <span class="pill">Azure Edge Zones</span>
+          <span class="pill">Google Distributed Cloud</span>
+          <span class="pill">Cloudflare Workers</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>Cloud Computing — Complete Study Reference &nbsp;·&nbsp; Five Units &nbsp;·&nbsp; Fundamentals to Quantum</p>
+  <p style="margin-top:0.5rem; color:#1f2d45">Generated for academic reference</p>
+</footer>
+
+</body>
+</html>
