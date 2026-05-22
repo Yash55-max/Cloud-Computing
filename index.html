@@ -3,321 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>100-Day Placement & AI Prep Tracker</title>
+    <title>Terminal Core - 100 Day Matrix</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
+            font-family: 'Fira Code', monospace;
+            background-color: #030712;
+            color: #4ade80;
         }
-        .task-checkbox:checked + .task-text {
-            text-decoration: line-through;
-            color: #64748b;
-            opacity: 0.6;
+        .terminal-border {
+            border: 1px solid #16a34a;
+        }
+        .terminal-glow {
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+        }
+        .day-node {
+            transition: all 0.2s ease;
+        }
+        .day-node.completed {
+            background-color: #16a34a;
+            color: #030712;
+        }
+        .day-node.active {
+            border-color: #4ade80;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+        }
+        input[type="checkbox"] {
+            accent-color: #16a34a;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #16a34a;
         }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
+<body class="min-h-screen p-3 md:p-6 selection:bg-green-900 selection:text-green-300">
 
-    <div class="max-w-7xl mx-auto">
-        <header class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white">100-Day Campus Recruitment & AI Matrix</h1>
-                <p class="text-slate-400 mt-1 text-sm md:text-base">Track your preparation across Aptitude, Python DSA, and Production AI Engineering pipelines simultaneously.</p>
-            </div>
-            <div class="w-full md:w-80 bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col gap-2">
-                <div class="flex justify-between items-center text-sm">
-                    <span class="text-slate-400 font-medium">Overall Progress</span>
-                    <span id="progress-percent" class="text-teal-400 font-bold text-lg">0%</span>
+    <div class="max-w-7xl mx-auto flex flex-col gap-6">
+        
+        <header class="bg-black terminal-border terminal-glow rounded-lg p-4 md:p-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="text-xs text-green-600 mb-1">SYSTEM: CORE_MATRIX_RECRUITMENT_2026_INIT...</div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight text-green-400">root@placement-drive:~# ./run_100_day_plan.sh</h1>
                 </div>
-                <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="bg-teal-500 h-full w-0 transition-all duration-300"></div>
-                </div>
-                <div class="flex justify-between items-center text-xs text-slate-500 mt-1">
-                    <span id="completed-count">0 Tasks Done</span>
-                    <button onclick="resetTracker()" class="text-amber-500 hover:text-amber-400 font-semibold uppercase tracking-wider">Reset All</button>
+                <div class="w-full md:w-96 bg-gray-950 p-4 rounded border border-green-900 flex flex-col gap-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-green-600 font-medium">MATRIX_COMPLETION_FLOW</span>
+                        <span id="progress-percent" class="text-green-400 font-bold">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-900 h-4 rounded border border-green-800 overflow-hidden flex items-center px-1">
+                        <div id="progress-bar" class="bg-green-500 h-2 w-0 transition-all duration-300"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] text-green-700">
+                        <span id="completed-count">0/300 NODES VERIFIED</span>
+                        <button onclick="resetSystemTracker()" class="text-red-500 hover:underline bg-transparent border-none cursor-pointer">CRASH_STATE_RESET</button>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <div class="flex flex-wrap gap-2 mb-8 bg-slate-900 p-2 rounded-xl border border-slate-800">
-            <button onclick="switchPhase(1)" id="tab-phase-1" class="phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center bg-teal-600 text-white">
-                Phase 1 (Days 1-25)<br><span class="text-xs opacity-80">Foundations</span>
-            </button>
-            <button onclick="switchPhase(2)" id="tab-phase-2" class="phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center text-slate-400 hover:text-slate-200">
-                Phase 2 (Days 26-50)<br><span class="text-xs opacity-80">Production Shift</span>
-            </button>
-            <button onclick="switchPhase(3)" id="tab-phase-3" class="phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center text-slate-400 hover:text-slate-200">
-                Phase 3 (Days 51-75)<br><span class="text-xs opacity-80">Agentic Architecture</span>
-            </button>
-            <button onclick="switchPhase(4)" id="tab-phase-4" class="phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center text-slate-400 hover:text-slate-200">
-                Phase 4 (Days 76-100)<br><span class="text-xs opacity-80">Final Sprint</span>
-            </button>
-        </div>
-
-        <div id="tasks-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-7 bg-black terminal-border rounded-lg p-4">
+                <div class="text-xs text-green-600 mb-3 uppercase tracking-wider font-bold">Select Node Engine (Day 1 - 100)</div>
+                <div class="grid grid-cols-5 sm:grid-cols-10 gap-2 overflow-y-auto max-h-[550px] p-1 border border-green-950 rounded bg-gray-950" id="matrix-grid">
+                    </div>
+                <div class="mt-4 p-3 bg-gray-950 border border-green-950 rounded text-xs text-green-600 leading-relaxed">
+                    Every numerical node corresponds to an isolated, mandatory single-day operational framework. Complete all three tracks inside a day node to set the system module state to absolute green verification.
+                </div>
             </div>
+
+            <div class="lg:col-span-5 flex flex-col gap-4">
+                <div class="bg-black terminal-border rounded-lg p-4 flex-grow flex flex-col justify-between min-h-[400px]">
+                    <div>
+                        <div class="flex justify-between items-center border-b border-green-900 pb-2 mb-4">
+                            <span class="text-xs text-green-600 uppercase font-bold" id="console-day-header">CONSOLE::NODE_VIEW_LOGS</span>
+                            <span class="text-xs text-black bg-green-500 px-1 font-bold" id="console-day-badge">DAY_01</span>
+                        </div>
+                        
+                        <div class="space-y-4" id="console-task-list">
+                            </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-green-950 text-xs text-green-700 flex justify-between items-center">
+                        <span>STATUS: ACTIVE_LISTENING</span>
+                        <span id="node-completion-status">CHECKS: 0/3</span>
+                    </div>
+                </div>
+                
+                <div class="bg-black terminal-border rounded-lg p-4 text-xs space-y-2">
+                    <div class="text-green-500 font-bold">OPERATIONAL DIRECTIVES:</div>
+                    <div class="text-green-600"><span class="text-green-400 font-bold">TRACK_A (1.5H):</span> Numerical analytics, logical sequencing, quantitative speed filters.</div>
+                    <div class="text-green-600"><span class="text-green-400 font-bold">TRACK_B (2.0H):</span> Structural optimization, algorithmic complexity, programmatic logic execution.</div>
+                    <div class="text-green-600"><span class="text-green-400 font-bold">TRACK_C (2.5H):</span> Enterprise relational modeling, microservice configuration, orchestrations.</div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <script>
-        // Full pre-populated data array structured across 4 sequential phases and 3 daily tracks
-        const roadmapData = {
-            1: [
-                {
-                    track: "Track A: Aptitude & Reasoning",
-                    time: "1.5 Hours Daily",
-                    color: "border-t-blue-500",
-                    tasks: [
-                        { id: "p1-a1", text: "Master percentage fundamentals, fractional conversions, and relative calculation short methods." },
-                        { id: "p1-a2", text: "Practice Profit and Loss equations, markup mechanics, and discount series reductions." },
-                        { id: "p1-a3", text: "Solve Ratio and Proportion challenges alongside classical partnership data scenarios." },
-                        { id: "p1-a4", text: "Understand Simple and Compound interest calculations using step-wise percentage changes." },
-                        { id: "p1-a5", text: "Execute daily 30-minute logical speed math drills including coding-decoding and series completion." }
-                    ]
-                },
-                {
-                    track: "Track B: Python DSA",
-                    time: "2.0 Hours Daily",
-                    color: "border-t-emerald-500",
-                    tasks: [
-                        { id: "p1-b1", text: "Analyze internal algorithmic time complexity metrics for core Python data structures." },
-                        { id: "p1-b2", text: "Practice string manipulation techniques and structural formatting adjustments without standard libraries." },
-                        { id: "p1-b3", text: "Implement classic two-pointer logical algorithms on clean sorted arrays." },
-                        { id: "p1-b4", text: "Master foundational fixed-size sliding window logic constraints on numerical matrices." },
-                        { id: "p1-b5", text: "Complete 25 basic data array manipulation challenges on LeetCode under strict execution timers." }
-                    ]
-                },
-                {
-                    track: "Track C: Advanced Data Science & SQL",
-                    time: "2.5 Hours Daily",
-                    color: "border-t-teal-500",
-                    tasks: [
-                        { id: "p1-c1", text: "Write complex SQL window functions utilizing partition systems and ranking mechanics." },
-                        { id: "p1-c2", text: "Optimize multi-stage relational queries utilizing sequential Common Table Expressions." },
-                        { id: "p1-c3", text: "Review advanced statistical learning algorithms via Scikit-learn execution frameworks." },
-                        { id: "p1-c4", text: "Implement explainable AI interpretability processes natively using SHAP data frameworks." },
-                        { id: "p1-c5", text: "Evaluate structural classification models for algorithmic fairness constraints using Fairlearn." }
-                    ]
-                }
-            ],
-            2: [
-                {
-                    track: "Track A: Aptitude & Reasoning",
-                    time: "1.5 Hours Daily",
-                    color: "border-t-blue-500",
-                    tasks: [
-                        { id: "p2-a1", text: "Solve relative speed challenges involving proportional variations in time, speed, and distance parameters." },
-                        { id: "p2-a2", text: "Analyze group workflow efficiencies using standard work, wages, and timeline equations." },
-                        { id: "p2-a3", text: "Master permutation arrangements and structural probability distributions for selection mechanics." },
-                        { id: "p2-a4", text: "Evaluate categorical logical arguments systematically using Venn diagram models and syllogisms." },
-                        { id: "p2-a5", text: "Resolve highly complex multi-variable linear and circular seating arrangement sequences." }
-                    ]
-                },
-                {
-                    track: "Track B: Python DSA",
-                    time: "2.0 Hours Daily",
-                    color: "border-t-emerald-500",
-                    tasks: [
-                        { id: "p2-b1", text: "Construct functional single and doubly linked list data nodes without internal object wrappers." },
-                        { id: "p2-b2", text: "Implement custom data stack structures and optimize dynamic queue manipulation operations." },
-                        { id: "p2-b3", text: "Design efficient recursive functions and map corresponding memory execution stack traces." },
-                        { id: "p2-b4", text: "Apply binary search patterns across customized non-linear sorted coordinate areas." },
-                        { id: "p2-b5", text: "Resolve 25 medium-tier programmatic data structure tasks across designated public testing portals." }
-                    ]
-                },
-                {
-                    track: "Track C: Production AI & MLOps",
-                    time: "2.5 Hours Daily",
-                    color: "border-t-teal-500",
-                    tasks: [
-                        { id: "p2-c1", text: "Refactor loosely structured research modules into explicit production-ready object-oriented Python scripts." },
-                        { id: "p2-c2", text: "Build high-performance asynchronous data serving endpoints natively using FastAPI mechanics." },
-                        { id: "p2-c3", text: "Configure environment validation standards and robust pipeline logging across API systems." },
-                        { id: "p2-c4", text: "Construct optimized configuration settings to package microservice files with custom Dockerfiles." },
-                        { id: "p2-c5", text: "Orchestrate multi-container internal networks using isolated local deployment configurations." }
-                    ]
-                }
-            ],
-            3: [
-                {
-                    track: "Track A: Aptitude & Reasoning",
-                    time: "1.5 Hours Daily",
-                    color: "border-t-blue-500",
-                    tasks: [
-                        { id: "p3-a1", text: "Interpret structural data trends quickly from complex multi-layered charts and visualization summaries." },
-                        { id: "p3-a2", text: "Analyze data sufficiency problems by isolating core constraints from unnecessary informational text." },
-                        { id: "p3-a3", text: "Evaluate analytical arguments by verifying underlying structural assumptions and causal chains." },
-                        { id: "p3-a4", text: "Solve coordinate timing configurations on standard clock frameworks and calendar matrix transformations." },
-                        { id: "p3-a5", text: "Execute full-length simulated analytical reasoning tests within exact placement engine limitations." }
-                    ]
-                },
-                {
-                    track: "Track B: Python DSA",
-                    time: "2.0 Hours Daily",
-                    color: "border-t-emerald-500",
-                    tasks: [
-                        { id: "p3-b1", text: "Build binary search trees and implement structured iterative pre, in, and post-order node traversals." },
-                        { id: "p3-b2", text: "Construct low-latency priority queue systems utilizing balanced heap allocations." },
-                        { id: "p3-b3", text: "Map complex systemic graph networks using explicit adjacency list structures." },
-                        { id: "p3-b4", text: "Execute systematic network search patterns using breadth-first and depth-first traversal systems." },
-                        { id: "p3-b5", text: "Build data structures to locate optimal pathway values across target algorithmic problem sets." }
-                    ]
-                },
-                {
-                    track: "Track C: Generative AI & Orchestration",
-                    time: "2.5 Hours Daily",
-                    color: "border-t-teal-500",
-                    tasks: [
-                        { id: "p3-c1", text: "Develop end-to-end Retrieval-Augmented Generation architectures with multi-stage chunking optimizations." },
-                        { id: "p3-c2", text: "Implement semantic vector vector matching utilizing enterprise Qdrant server instances." },
-                        { id: "p3-c3", text: "Apply high-performance payload tracking strategies using strict vector metadata filtering parameters." },
-                        { id: "p3-c4", text: "Orchestrate automated data execution tasks across complex model boundaries using LangChain frameworks." },
-                        { id: "p3-c5", text: "Design unified tool context handling endpoints with open Model Context Protocol standards." }
-                    ]
-                }
-            ],
-            4: [
-                {
-                    track: "Track A: Aptitude & Reasoning",
-                    time: "1.5 Hours Daily",
-                    color: "border-t-blue-500",
-                    tasks: [
-                        { id: "p4-a1", text: "Complete five exhaustive, timed campus assessment simulations to build testing speed." },
-                        { id: "p4-a2", text: "Analyze past paper question distributions from target enterprise tier tech firms." },
-                        { id: "p4-a3", text: "Optimize quantitative question-skipping choices to maximize net scoring efficiency limits." },
-                        { id: "p4-a4", text: "Re-verify past error frameworks across trick questions and data sufficiency problems." },
-                        { id: "p4-a5", text: "Refine personal calculation shortcuts for fast arithmetic evaluations under stress." }
-                    ]
-                },
-                {
-                    track: "Track B: Python DSA",
-                    time: "2.0 Hours Daily",
-                    color: "border-t-emerald-500",
-                    tasks: [
-                        { id: "p4-b1", text: "Implement standard greedy optimization strategies across classic scheduling data constraints." },
-                        { id: "p4-b2", text: "Master state storage properties across foundational multi-stage dynamic programming models." },
-                        { id: "p4-b3", text: "Review your personal library of incorrect coding attempts to isolate recurring logical errors." },
-                        { id: "p4-b4", text: "Execute daily randomized 30-minute technical coding challenges with zero reference manuals." },
-                        { id: "p4-b5", text: "Format clean code submission layouts to ensure readability for technical evaluation panels." }
-                    ]
-                },
-                {
-                    track: "Track C: Portfolio & Interview Polish",
-                    time: "2.5 Hours Daily",
-                    color: "border-t-teal-500",
-                    tasks: [
-                        { id: "p4-c1", text: "Deploy your containerized service architecture to active, reachable cloud platform environments." },
-                        { id: "p4-c2", text: "Refactor your core portfolio repositories on GitHub to prioritize clean production layouts." },
-                        { id: "p4-c3", text: "Document system architecture components cleanly inside clear, structural markdown files." },
-                        { id: "p4-c4", text: "Practice mock technical interview explanations focusing on engineering trade-offs and deployment metrics." },
-                        { id: "p4-c5", text: "Format a precise resume layout emphasizing production execution frameworks over basic training metrics." }
-                    ]
-                }
-            ]
+        const totalDays = 100;
+        let selectedDay = 1;
+        const storageKey = "terminal_matrix_state_2026";
+        
+        let matrixState = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+        const coreTopics = {
+            p1: {
+                aptitude: ["Percentage calculations, fractional shortcuts, calculation mechanics.", "Profit/Loss variations, price markup systems, product discount series.", "Ratio setups, proportions, corporate partnership financial metrics.", "Simple/Compound interest updates and balance estimation techniques.", "Logical sequencing, code decryption methods, structural series items."],
+                dsa: ["Python data type complexities, runtime tracking, memory layouts.", "String algorithmic manipulations, syntax parsing without platform tools.", "Two-pointer search adjustments across cleanly indexed static vectors.", "Fixed sliding window mechanics on linear coordinate systems.", "LeetCode basic structural optimizations across classical test cases."],
+                ai: ["SQL relational window partitioning, dynamic rank algorithms.", "Common Table Expressions, secondary join paths, sequence performance.", "Statistical ML pipeline checking inside Scikit-learn architectures.", "Interpretability extraction models via targeted local SHAP values.", "Classification parity monitoring using Fairlearn validation steps."]
+            },
+            p2: {
+                aptitude: ["Relative target speeds, time/distance variables, travel systems.", "Labor metrics, payment calculations, operational group timelines.", "Permutation structures, data selection paths, base probability matrices.", "Categorical syllogism statements, cross-verifications via diagrams.", "Complex circular and linear seating placement sequence constraints."],
+                dsa: ["Custom singly/doubly linked data nodes without engine wrappers.", "Stack data configurations, index queue manipulation efficiency profiles.", "Recursive function tracks, call execution memory limit evaluations.", "Binary boundary search parameters over structured numeric arrays.", "LeetCode intermediate data structures across target interview items."],
+                ai: ["Modular object-oriented conversion of standard prototype scripts.", "Asynchronous router endpoint configurations using Python FastAPI.", "System boundary error capture mechanics, API log configurations.", "Configuring baseline operational environments via clear Dockerfiles.", "Multiservice configuration files inside unified network platforms."]
+            },
+            p3: {
+                aptitude: ["Data translation workflows across comprehensive multi-axis charts.", "Data sufficiency extraction, clearing redundant informational noise.", "Causal chain structures, argument evaluations, base tracking logic.", "Coordinate clock geometry values, calendar interval transitions.", "Full assessment run simulations matching placement timeframes."],
+                dsa: ["Binary tree structures, complex nodular value trajectory checks.", "Priority queue allocations utilizing balanced system heap arrays.", "Graph matrix network setups, adjacency connection layout mappings.", "Breadth-first and depth-first traversal route optimization code.", "Dynamic path searching arrays across integrated problem grids."],
+                ai: ["RAG architectural engineering with structural vector indexing.", "Semantic lookup operations inside production Qdrant database servers.", "Payload tracking profiles with localized metadata filter metrics.", "Multi-tier prompt flow controls using LangChain configuration code.", "Unified framework tool integration via Model Context Protocol tools."]
+            },
+            p4: {
+                aptitude: ["Comprehensive placement online assessment execution parameters.", "Structural test review metrics tracking major recruitment profiles.", "Question triage logic to optimize net points per minute scales.", "Error matrix tracking covering complex critical reasoning traps.", "Arithmetic parameter estimation techniques under short execution limits."],
+                dsa: ["Greedy prioritization logic across task scheduler algorithms.", "State space indexing properties inside multi-step DP structures.", "Debugging past incorrect coding scripts to isolate logical loops.", "Standalone 30-minute programming sprints with no external docs.", "Refining structure presentation formatting for assessment checkers."],
+                ai: ["Launching container systems to remote production cloud backends.", "Optimizing GitHub version profiles to present clean code tracks.", "System architecture documentation inside structured markdown files.", "Mock interview reviews targeting performance trade-off explanations.", "Structuring engineering resume elements around system build frameworks."]
+            }
         };
 
-        let currentPhase = 1;
-        const storageKey = "placement_prep_tracker_state";
+        function getPhaseKey(day) {
+            if (day <= 25) return 'p1';
+            if (day <= 50) return 'p2';
+            if (day <= 75) return 'p3';
+            return 'p4';
+        }
 
-        // Load or initialize state from client browser storage
-        let trackingState = JSON.parse(localStorage.getItem(storageKey)) || {};
+        function getTaskText(day, trackType) {
+            const phase = getPhaseKey(day);
+            const index = (day - 1) % 5;
+            const topic = coreTopics[phase][trackType][index];
+            
+            if (trackType === 'aptitude') return `Track A (1.5H) - Focus: Day ${day} targets ${topic} Complete 10 timed practice sets.`;
+            if (trackType === 'dsa') return `Track B (2.0H) - Focus: Day ${day} targets ${topic} Implement clean solution parameters.`;
+            return `Track C (2.5H) - Focus: Day ${day} targets ${topic} Verify terminal configuration logs.`;
+        }
 
-        function renderTasks() {
-            const grid = document.getElementById("tasks-grid");
+        function initializeMatrixGrid() {
+            const grid = document.getElementById("matrix-grid");
             grid.innerHTML = "";
 
-            const phaseData = roadmapData[currentPhase];
+            for (let d = 1; d <= totalDays; d++) {
+                const node = document.createElement("button");
+                node.id = `node-day-${d}`;
+                node.innerText = String(d).padStart(3, '0');
+                node.className = "day-node text-xs p-2 rounded border border-green-900 bg-black text-green-500 font-bold hover:border-green-400";
+                node.onclick = () => selectDayNode(d);
+                grid.appendChild(node);
+            }
+            updateGridVisualStates();
+        }
 
-            phaseData.forEach(trackBlock => {
-                const column = document.createElement("div");
-                column.className = `bg-slate-900 border-t-4 ${trackBlock.color} border border-slate-800 rounded-xl p-5 shadow-lg flex flex-col gap-4`;
-                
-                let taskListHTML = `<div class="space-y-3">`;
-                
-                trackBlock.tasks.forEach(task => {
-                    const isChecked = trackingState[task.id] ? "checked" : "";
-                    taskListHTML += `
-                        <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-lg border border-slate-800/60 cursor-pointer hover:border-slate-700 transition-all select-none">
-                            <input type="checkbox" id="${task.id}" ${isChecked} onchange="toggleTask('${task.id}')" class="task-checkbox mt-1 h-4 w-4 rounded border-slate-700 bg-slate-900 text-teal-500 focus:ring-teal-600 focus:ring-offset-slate-950">
-                            <span class="task-text text-slate-300 text-sm leading-relaxed">${task.text}</span>
-                        </label>
-                    `;
-                });
+        function selectDayNode(day) {
+            selectedDay = day;
+            
+            document.querySelectorAll(".day-node").forEach(node => {
+                node.classList.remove("active");
+            });
+            const activeNode = document.getElementById(`node-day-${day}`);
+            if (activeNode) activeNode.classList.add("active");
 
-                taskListHTML += `</div>`;
+            document.getElementById("console-day-header").innerText = `CONSOLE::NODE_DAY_${String(day).padStart(3, '0')}_LOGS`;
+            document.getElementById("console-day-badge").innerText = `DAY_${String(day).padStart(3, '0')}`;
 
-                column.innerHTML = `
-                    <div>
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">${trackBlock.time}</span>
-                        <h2 class="text-lg font-bold text-white mt-3">${trackBlock.track}</h2>
-                    </div>
-                    ${taskListHTML}
+            renderConsoleTasks(day);
+        }
+
+        function renderConsoleTasks(day) {
+            const container = document.getElementById("console-task-list");
+            container.innerHTML = "";
+
+            const tracks = ['aptitude', 'dsa', 'ai'];
+            let checksCount = 0;
+
+            tracks.forEach(track => {
+                const taskId = `d-${day}-${track}`;
+                const isChecked = matrixState[taskId] ? "checked" : "";
+                if (matrixState[taskId]) checksCount++;
+
+                const taskText = getTaskText(day, track);
+
+                const taskLabel = document.createElement("label");
+                taskLabel.className = "flex items-start gap-3 p-3 bg-gray-950 border border-green-950 rounded cursor-pointer hover:border-green-700 transition-all";
+                taskLabel.innerHTML = `
+                    <input type="checkbox" id="${taskId}" ${isChecked} onchange="toggleSystemTask('${taskId}', ${day})" class="mt-1 h-4 w-4 bg-black border-green-900 text-green-500 focus:ring-0">
+                    <span class="task-text text-sm leading-relaxed text-green-400">${taskText}</span>
                 `;
-                
-                grid.appendChild(column);
+                container.appendChild(taskLabel);
             });
 
-            updateProgress();
+            document.getElementById("node-completion-status").innerText = `CHECKS: ${checksCount}/3`;
         }
 
-        function toggleTask(id) {
-            const checkbox = document.getElementById(id);
-            trackingState[id] = checkbox.checked;
-            localStorage.setItem(storageKey, JSON.stringify(trackingState));
-            updateProgress();
-        }
-
-        function updateProgress() {
-            let totalTasks = 0;
-            let checkedTasks = 0;
-
-            Object.keys(roadmapData).forEach(phase => {
-                roadmapData[phase].forEach(track => {
-                    track.tasks.forEach(task => {
-                        totalTasks++;
-                        if (trackingState[task.id]) {
-                            checkedTasks++;
-                        }
-                    });
-                });
-            });
-
-            const percent = totalTasks > 0 ? Math.round((checkedTasks / totalTasks) * 100) : 0;
+        function toggleSystemTask(taskId, day) {
+            const checkbox = document.getElementById(taskId);
+            matrixState[taskId] = checkbox.checked;
+            localStorage.setItem(storageKey, JSON.stringify(matrixState));
             
-            document.getElementById("progress-percent").innerText = `${percent}%`;
-            document.getElementById("progress-bar").style.width = `${percent}%`;
-            document.getElementById("completed-count").innerText = `${checkedTasks} / ${totalTasks} Tasks Done`;
+            updateGridVisualStates();
+            selectDayNode(day);
+            calculateOverallSystemMetrics();
         }
 
-        function switchPhase(phaseNum) {
-            currentPhase = phaseNum;
+        function updateGridVisualStates() {
+            for (let d = 1; d <= totalDays; d++) {
+                const node = document.getElementById(`node-day-${d}`);
+                if (!node) continue;
+
+                const tA = matrixState[`d-${d}-aptitude`];
+                const tB = matrixState[`d-${d}-dsa`];
+                const tC = matrixState[`d-${d}-ai`];
+
+                if (tA && tB && tC) {
+                    node.className = "day-node text-xs p-2 rounded font-bold bg-green-500 text-black border border-green-400";
+                } else if (tA || tB || tC) {
+                    node.className = "day-node text-xs p-2 rounded font-bold bg-black text-green-300 border border-green-600 border-dashed";
+                } else {
+                    node.className = "day-node text-xs p-2 rounded font-bold bg-black text-green-600 border border-green-950";
+                }
+            }
+            const activeNode = document.getElementById(`node-day-${selectedDay}`);
+            if (activeNode) activeNode.classList.add("active");
+        }
+
+        function calculateOverallSystemMetrics() {
+            let totalNodes = totalDays * 3;
+            let verifiedNodes = 0;
+
+            for (let d = 1; d <= totalDays; d++) {
+                if (matrixState[`d-${d}-aptitude`]) verifiedNodes++;
+                if (matrixState[`d-${d}-dsa`]) verifiedNodes++;
+                if (matrixState[`d-${d}-ai`]) verifiedNodes++;
+            }
+
+            const scalePercentage = totalNodes > 0 ? Math.round((verifiedNodes / totalNodes) * 100) : 0;
             
-            document.querySelectorAll(".phase-tab").forEach(tab => {
-                tab.className = "phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center text-slate-400 hover:text-slate-200";
-            });
-
-            const activeTab = document.getElementById(`tab-phase-${phaseNum}`);
-            activeTab.className = "phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center bg-teal-600 text-white";
-
-            renderTasks();
+            document.getElementById("progress-percent").innerText = `${scalePercentage}%`;
+            document.getElementById("progress-bar").style.width = `${scalePercentage}%`;
+            document.getElementById("completed-count").innerText = `${verifiedNodes}/${totalNodes} NODES VERIFIED`;
         }
 
-        function resetTracker() {
-            if (confirm("Are you sure you want to clear your entire preparation progress?")) {
-                trackingState = {};
+        function resetSystemTracker() {
+            if (confirm("Execute total matrix storage crash reset? All logged progress will be cleared.")) {
+                matrixState = {};
                 localStorage.removeItem(storageKey);
-                
-                // Uncheck current visible checkboxes manually to avoid layout stutter
-                document.querySelectorAll(".task-checkbox").forEach(box => box.checked = false);
-                
-                renderTasks();
+                initializeMatrixGrid();
+                selectDayNode(1);
+                calculateOverallSystemMetrics();
             }
         }
 
-        // Run initial data render on system launch
-        renderTasks();
+        // System bootstrap execution
+        initializeMatrixGrid();
+        selectDayNode(1);
+        calculateOverallSystemMetrics();
     </script>
 </body>
-</html>
+            </html>
+            
