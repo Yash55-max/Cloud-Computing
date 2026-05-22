@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100-Day Placement & AI Prep Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .task-checkbox:checked + .task-text {
+            text-decoration: line-through;
+            color: #64748b;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-8 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white">100-Day Campus Recruitment & AI Matrix</h1>
+                <p class="text-slate-400 mt-1 text-sm md:text-base">Track your preparation across Aptitude, Python DSA, and Production AI Engineering pipelines simultaneously.</p>
+            </div>
+            <div class="w-full md:w-80 bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col gap-2">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-400 font-medium">Overall Progress</span>
+                    <span id="progress-percent" class="text-teal-400 font-bold text-lg">0%</span>
+                </div>
+                <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-teal-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+                <div class="flex justify-between items-center text-xs text-slate-500 mt-1">
+                    <span id="completed-count">0 Tasks Done</span>
+                    <button onclick="resetTracker()" class="text-amber-500 hover:text-amber-400 font-semibold uppercase tracking-wider">Reset All</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex flex-wrap gap-2 mb-8 bg-slate-900 p-2 rounded-xl border border-slate-800">
+            <button onclick="switchPhase(1)" id="tab-phase-1" class="phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center bg-teal-600 text-white">
+                Phase 1 (Days 1-25)<br><span class="text-xs opacity-80">Foundations</span>
+            </button>
+            <button onclick="switchPhase(2)" id="tab-phase-2" class="phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center text-slate-400 hover:text-slate-200">
+                Phase 2 (Days 26-50)<br><span class="text-xs opacity-80">Production Shift</span>
+            </button>
+            <button onclick="switchPhase(3)" id="tab-phase-3" class="phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center text-slate-400 hover:text-slate-200">
+                Phase 3 (Days 51-75)<br><span class="text-xs opacity-80">Agentic Architecture</span>
+            </button>
+            <button onclick="switchPhase(4)" id="tab-phase-4" class="phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center text-slate-400 hover:text-slate-200">
+                Phase 4 (Days 76-100)<br><span class="text-xs opacity-80">Final Sprint</span>
+            </button>
+        </div>
+
+        <div id="tasks-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            </div>
+    </div>
+
+    <script>
+        // Full pre-populated data array structured across 4 sequential phases and 3 daily tracks
+        const roadmapData = {
+            1: [
+                {
+                    track: "Track A: Aptitude & Reasoning",
+                    time: "1.5 Hours Daily",
+                    color: "border-t-blue-500",
+                    tasks: [
+                        { id: "p1-a1", text: "Master percentage fundamentals, fractional conversions, and relative calculation short methods." },
+                        { id: "p1-a2", text: "Practice Profit and Loss equations, markup mechanics, and discount series reductions." },
+                        { id: "p1-a3", text: "Solve Ratio and Proportion challenges alongside classical partnership data scenarios." },
+                        { id: "p1-a4", text: "Understand Simple and Compound interest calculations using step-wise percentage changes." },
+                        { id: "p1-a5", text: "Execute daily 30-minute logical speed math drills including coding-decoding and series completion." }
+                    ]
+                },
+                {
+                    track: "Track B: Python DSA",
+                    time: "2.0 Hours Daily",
+                    color: "border-t-emerald-500",
+                    tasks: [
+                        { id: "p1-b1", text: "Analyze internal algorithmic time complexity metrics for core Python data structures." },
+                        { id: "p1-b2", text: "Practice string manipulation techniques and structural formatting adjustments without standard libraries." },
+                        { id: "p1-b3", text: "Implement classic two-pointer logical algorithms on clean sorted arrays." },
+                        { id: "p1-b4", text: "Master foundational fixed-size sliding window logic constraints on numerical matrices." },
+                        { id: "p1-b5", text: "Complete 25 basic data array manipulation challenges on LeetCode under strict execution timers." }
+                    ]
+                },
+                {
+                    track: "Track C: Advanced Data Science & SQL",
+                    time: "2.5 Hours Daily",
+                    color: "border-t-teal-500",
+                    tasks: [
+                        { id: "p1-c1", text: "Write complex SQL window functions utilizing partition systems and ranking mechanics." },
+                        { id: "p1-c2", text: "Optimize multi-stage relational queries utilizing sequential Common Table Expressions." },
+                        { id: "p1-c3", text: "Review advanced statistical learning algorithms via Scikit-learn execution frameworks." },
+                        { id: "p1-c4", text: "Implement explainable AI interpretability processes natively using SHAP data frameworks." },
+                        { id: "p1-c5", text: "Evaluate structural classification models for algorithmic fairness constraints using Fairlearn." }
+                    ]
+                }
+            ],
+            2: [
+                {
+                    track: "Track A: Aptitude & Reasoning",
+                    time: "1.5 Hours Daily",
+                    color: "border-t-blue-500",
+                    tasks: [
+                        { id: "p2-a1", text: "Solve relative speed challenges involving proportional variations in time, speed, and distance parameters." },
+                        { id: "p2-a2", text: "Analyze group workflow efficiencies using standard work, wages, and timeline equations." },
+                        { id: "p2-a3", text: "Master permutation arrangements and structural probability distributions for selection mechanics." },
+                        { id: "p2-a4", text: "Evaluate categorical logical arguments systematically using Venn diagram models and syllogisms." },
+                        { id: "p2-a5", text: "Resolve highly complex multi-variable linear and circular seating arrangement sequences." }
+                    ]
+                },
+                {
+                    track: "Track B: Python DSA",
+                    time: "2.0 Hours Daily",
+                    color: "border-t-emerald-500",
+                    tasks: [
+                        { id: "p2-b1", text: "Construct functional single and doubly linked list data nodes without internal object wrappers." },
+                        { id: "p2-b2", text: "Implement custom data stack structures and optimize dynamic queue manipulation operations." },
+                        { id: "p2-b3", text: "Design efficient recursive functions and map corresponding memory execution stack traces." },
+                        { id: "p2-b4", text: "Apply binary search patterns across customized non-linear sorted coordinate areas." },
+                        { id: "p2-b5", text: "Resolve 25 medium-tier programmatic data structure tasks across designated public testing portals." }
+                    ]
+                },
+                {
+                    track: "Track C: Production AI & MLOps",
+                    time: "2.5 Hours Daily",
+                    color: "border-t-teal-500",
+                    tasks: [
+                        { id: "p2-c1", text: "Refactor loosely structured research modules into explicit production-ready object-oriented Python scripts." },
+                        { id: "p2-c2", text: "Build high-performance asynchronous data serving endpoints natively using FastAPI mechanics." },
+                        { id: "p2-c3", text: "Configure environment validation standards and robust pipeline logging across API systems." },
+                        { id: "p2-c4", text: "Construct optimized configuration settings to package microservice files with custom Dockerfiles." },
+                        { id: "p2-c5", text: "Orchestrate multi-container internal networks using isolated local deployment configurations." }
+                    ]
+                }
+            ],
+            3: [
+                {
+                    track: "Track A: Aptitude & Reasoning",
+                    time: "1.5 Hours Daily",
+                    color: "border-t-blue-500",
+                    tasks: [
+                        { id: "p3-a1", text: "Interpret structural data trends quickly from complex multi-layered charts and visualization summaries." },
+                        { id: "p3-a2", text: "Analyze data sufficiency problems by isolating core constraints from unnecessary informational text." },
+                        { id: "p3-a3", text: "Evaluate analytical arguments by verifying underlying structural assumptions and causal chains." },
+                        { id: "p3-a4", text: "Solve coordinate timing configurations on standard clock frameworks and calendar matrix transformations." },
+                        { id: "p3-a5", text: "Execute full-length simulated analytical reasoning tests within exact placement engine limitations." }
+                    ]
+                },
+                {
+                    track: "Track B: Python DSA",
+                    time: "2.0 Hours Daily",
+                    color: "border-t-emerald-500",
+                    tasks: [
+                        { id: "p3-b1", text: "Build binary search trees and implement structured iterative pre, in, and post-order node traversals." },
+                        { id: "p3-b2", text: "Construct low-latency priority queue systems utilizing balanced heap allocations." },
+                        { id: "p3-b3", text: "Map complex systemic graph networks using explicit adjacency list structures." },
+                        { id: "p3-b4", text: "Execute systematic network search patterns using breadth-first and depth-first traversal systems." },
+                        { id: "p3-b5", text: "Build data structures to locate optimal pathway values across target algorithmic problem sets." }
+                    ]
+                },
+                {
+                    track: "Track C: Generative AI & Orchestration",
+                    time: "2.5 Hours Daily",
+                    color: "border-t-teal-500",
+                    tasks: [
+                        { id: "p3-c1", text: "Develop end-to-end Retrieval-Augmented Generation architectures with multi-stage chunking optimizations." },
+                        { id: "p3-c2", text: "Implement semantic vector vector matching utilizing enterprise Qdrant server instances." },
+                        { id: "p3-c3", text: "Apply high-performance payload tracking strategies using strict vector metadata filtering parameters." },
+                        { id: "p3-c4", text: "Orchestrate automated data execution tasks across complex model boundaries using LangChain frameworks." },
+                        { id: "p3-c5", text: "Design unified tool context handling endpoints with open Model Context Protocol standards." }
+                    ]
+                }
+            ],
+            4: [
+                {
+                    track: "Track A: Aptitude & Reasoning",
+                    time: "1.5 Hours Daily",
+                    color: "border-t-blue-500",
+                    tasks: [
+                        { id: "p4-a1", text: "Complete five exhaustive, timed campus assessment simulations to build testing speed." },
+                        { id: "p4-a2", text: "Analyze past paper question distributions from target enterprise tier tech firms." },
+                        { id: "p4-a3", text: "Optimize quantitative question-skipping choices to maximize net scoring efficiency limits." },
+                        { id: "p4-a4", text: "Re-verify past error frameworks across trick questions and data sufficiency problems." },
+                        { id: "p4-a5", text: "Refine personal calculation shortcuts for fast arithmetic evaluations under stress." }
+                    ]
+                },
+                {
+                    track: "Track B: Python DSA",
+                    time: "2.0 Hours Daily",
+                    color: "border-t-emerald-500",
+                    tasks: [
+                        { id: "p4-b1", text: "Implement standard greedy optimization strategies across classic scheduling data constraints." },
+                        { id: "p4-b2", text: "Master state storage properties across foundational multi-stage dynamic programming models." },
+                        { id: "p4-b3", text: "Review your personal library of incorrect coding attempts to isolate recurring logical errors." },
+                        { id: "p4-b4", text: "Execute daily randomized 30-minute technical coding challenges with zero reference manuals." },
+                        { id: "p4-b5", text: "Format clean code submission layouts to ensure readability for technical evaluation panels." }
+                    ]
+                },
+                {
+                    track: "Track C: Portfolio & Interview Polish",
+                    time: "2.5 Hours Daily",
+                    color: "border-t-teal-500",
+                    tasks: [
+                        { id: "p4-c1", text: "Deploy your containerized service architecture to active, reachable cloud platform environments." },
+                        { id: "p4-c2", text: "Refactor your core portfolio repositories on GitHub to prioritize clean production layouts." },
+                        { id: "p4-c3", text: "Document system architecture components cleanly inside clear, structural markdown files." },
+                        { id: "p4-c4", text: "Practice mock technical interview explanations focusing on engineering trade-offs and deployment metrics." },
+                        { id: "p4-c5", text: "Format a precise resume layout emphasizing production execution frameworks over basic training metrics." }
+                    ]
+                }
+            ]
+        };
+
+        let currentPhase = 1;
+        const storageKey = "placement_prep_tracker_state";
+
+        // Load or initialize state from client browser storage
+        let trackingState = JSON.parse(localStorage.getItem(storageKey)) || {};
+
+        function renderTasks() {
+            const grid = document.getElementById("tasks-grid");
+            grid.innerHTML = "";
+
+            const phaseData = roadmapData[currentPhase];
+
+            phaseData.forEach(trackBlock => {
+                const column = document.createElement("div");
+                column.className = `bg-slate-900 border-t-4 ${trackBlock.color} border border-slate-800 rounded-xl p-5 shadow-lg flex flex-col gap-4`;
+                
+                let taskListHTML = `<div class="space-y-3">`;
+                
+                trackBlock.tasks.forEach(task => {
+                    const isChecked = trackingState[task.id] ? "checked" : "";
+                    taskListHTML += `
+                        <label class="flex items-start gap-3 p-3 bg-slate-950 rounded-lg border border-slate-800/60 cursor-pointer hover:border-slate-700 transition-all select-none">
+                            <input type="checkbox" id="${task.id}" ${isChecked} onchange="toggleTask('${task.id}')" class="task-checkbox mt-1 h-4 w-4 rounded border-slate-700 bg-slate-900 text-teal-500 focus:ring-teal-600 focus:ring-offset-slate-950">
+                            <span class="task-text text-slate-300 text-sm leading-relaxed">${task.text}</span>
+                        </label>
+                    `;
+                });
+
+                taskListHTML += `</div>`;
+
+                column.innerHTML = `
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">${trackBlock.time}</span>
+                        <h2 class="text-lg font-bold text-white mt-3">${trackBlock.track}</h2>
+                    </div>
+                    ${taskListHTML}
+                `;
+                
+                grid.appendChild(column);
+            });
+
+            updateProgress();
+        }
+
+        function toggleTask(id) {
+            const checkbox = document.getElementById(id);
+            trackingState[id] = checkbox.checked;
+            localStorage.setItem(storageKey, JSON.stringify(trackingState));
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let totalTasks = 0;
+            let checkedTasks = 0;
+
+            Object.keys(roadmapData).forEach(phase => {
+                roadmapData[phase].forEach(track => {
+                    track.tasks.forEach(task => {
+                        totalTasks++;
+                        if (trackingState[task.id]) {
+                            checkedTasks++;
+                        }
+                    });
+                });
+            });
+
+            const percent = totalTasks > 0 ? Math.round((checkedTasks / totalTasks) * 100) : 0;
+            
+            document.getElementById("progress-percent").innerText = `${percent}%`;
+            document.getElementById("progress-bar").style.width = `${percent}%`;
+            document.getElementById("completed-count").innerText = `${checkedTasks} / ${totalTasks} Tasks Done`;
+        }
+
+        function switchPhase(phaseNum) {
+            currentPhase = phaseNum;
+            
+            document.querySelectorAll(".phase-tab").forEach(tab => {
+                tab.className = "phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center text-slate-400 hover:text-slate-200";
+            });
+
+            const activeTab = document.getElementById(`tab-phase-${phaseNum}`);
+            activeTab.className = "phase-tab flex-1 py-3 px-4 rounded-lg font-medium text-sm transition-all text-center bg-teal-600 text-white";
+
+            renderTasks();
+        }
+
+        function resetTracker() {
+            if (confirm("Are you sure you want to clear your entire preparation progress?")) {
+                trackingState = {};
+                localStorage.removeItem(storageKey);
+                
+                // Uncheck current visible checkboxes manually to avoid layout stutter
+                document.querySelectorAll(".task-checkbox").forEach(box => box.checked = false);
+                
+                renderTasks();
+            }
+        }
+
+        // Run initial data render on system launch
+        renderTasks();
+    </script>
+</body>
+</html>
